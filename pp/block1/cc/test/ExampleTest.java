@@ -1,7 +1,6 @@
 package pp.block1.cc.test;
 
 import org.junit.Test;
-
 import pp.block1.cc.antlr.Example;
 
 public class ExampleTest {
