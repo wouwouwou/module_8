@@ -6,6 +6,15 @@ package pp.block1.cc.dfa;
 public class MyChecker implements Checker{
     @Override
     public boolean accepts(State start, String word) {
-        return false;
+        State s = start;
+        boolean errorstate = false;
+        for(Character c : word.toCharArray()) {
+            if (s.hasNext(c)) {
+                s = s.getNext(c);
+            } else {
+                errorstate = true;
+            }
+        }
+        return s.isAccepting() && !errorstate;
     }
 }
