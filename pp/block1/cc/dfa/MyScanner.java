@@ -1,5 +1,6 @@
 package pp.block1.cc.dfa;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -8,6 +9,20 @@ import java.util.List;
 public class MyScanner implements Scanner{
     @Override
     public List<String> scan(State dfa, String text) {
-        return null;
+        List<String> res = new ArrayList<>();
+        String s = "";
+        State begin = dfa;
+        for(Character c : text.toCharArray()){
+            if (dfa.hasNext(c)) {
+                dfa = dfa.getNext(c);
+                s += c;
+            }
+            if (dfa.isAccepting()) {
+                res.add(s);
+                dfa = begin;
+                s = "";
+            }
+        }
+        return res;
     }
 }
