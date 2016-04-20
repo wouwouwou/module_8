@@ -1,4 +1,4 @@
-package pp.block1.cc.test;
+package pp.block1.cc;
 
 import static pp.block1.cc.dfa.State.ID6_DFA;
 
