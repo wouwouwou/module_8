@@ -1,4 +1,4 @@
-package pp.block1.cc.dfa;
+package src.main.java.pp.block1.cc.dfa;
 
 /**
  * Created by Wouter on 18-4-2016.
