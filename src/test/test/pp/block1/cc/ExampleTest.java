@@ -1,4 +1,4 @@
-package java.pp.block1.cc;
+package test.pp.block1.cc;
 
 import org.junit.Test;
 import pp.block1.cc.antlr.Example;
