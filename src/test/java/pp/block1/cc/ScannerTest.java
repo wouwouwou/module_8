@@ -1,4 +1,4 @@
-package test.pp.block1.cc;
+package pp.block1.cc;
 
 import java.util.List;
 

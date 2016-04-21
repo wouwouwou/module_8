@@ -1,10 +1,10 @@
-package test.pp.block1.cc;
+package pp.block1.cc;
 
 import org.junit.Test;
-import pp.block1.cc.antlr.cc13;
+import pp.block1.cc.antlr.cc12;
 
-public class cc13Test {
-	private static LexerTester tester = new LexerTester(cc13.class);
+public class cc12Test {
+	private static LexerTester tester = new LexerTester(cc12.class);
 
 	@Test
 	public void succeedingTest() {
@@ -14,7 +14,7 @@ public class cc13Test {
         tester.correct("ABCDEFABCDEF");
         tester.correct("a2b3c4A54c26 A54c26");
         tester.correct("a2b3c4 A54c26A54c26");
-		tester.yields("a12345 O132k3 p2k34I");
+		tester.yields("a12345 O132k3 p2k34I", cc12.IDENTIFIER, cc12.IDENTIFIER, cc12.IDENTIFIER);
 		tester.wrong("2DFSAs a45%dfs45");
 	}
 
@@ -25,11 +25,11 @@ public class cc13Test {
 
 	@Test
 	public void yieldCountTest() {
-		tester.yields("a12345 a132k3 p2k34Ip2k34I");
+		tester.yields("a12345 a132k3 p2k34Ip2k34I", cc12.IDENTIFIER, cc12.IDENTIFIER, cc12.IDENTIFIER, cc12.IDENTIFIER);
 	}
 
 	@Test
 	public void noSpacesBetweenKeywordsTest() {
-		tester.yields("a12345O132k3p2k34Ip2k34Ip2k34I");
+		tester.yields("a12345O132k3p2k34Ip2k34Ip2k34I", cc12.IDENTIFIER, cc12.IDENTIFIER, cc12.IDENTIFIER, cc12.IDENTIFIER, cc12.IDENTIFIER);
 	}
 }
