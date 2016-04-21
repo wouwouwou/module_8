@@ -1,0 +1,32 @@
+package pp.block1.cp.queue;
+
+import pp.block1.cp.queue.exceptions.QueueEmptyException;
+
+import java.util.LinkedList;
+
+/**
+ * Created by Wouter on 21-4-2016.
+ */
+public class MyQueue<T> implements Queue<T> {
+
+    private LinkedList<T> queue;
+
+    public MyQueue() {
+        this.queue = new LinkedList<>();
+    }
+
+    @Override
+    public void push(T x) {
+        queue.add(x);
+    }
+
+    @Override
+    public T pull() throws QueueEmptyException {
+        return queue.getFirst();
+    }
+
+    @Override
+    public int getLength() {
+        return queue.size();
+    }
+}
