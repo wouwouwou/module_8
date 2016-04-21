@@ -1,7 +1,7 @@
-package src.test.java.pp.block1.cc;
+package java.pp.block1.cc;
 
 import org.junit.Test;
-import src.main.java.pp.block1.cc.antlr.cc13;
+import pp.block1.cc.antlr.cc13;
 
 public class cc13Test {
 	private static LexerTester tester = new LexerTester(cc13.class);

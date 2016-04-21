@@ -1,12 +1,12 @@
-package src.test.java.pp.block1.cc;
+package java.pp.block1.cc;
 
 import org.junit.Assert;
 import org.junit.Test;
-import src.main.java.pp.block1.cc.dfa.Checker;
-import src.main.java.pp.block1.cc.dfa.MyChecker;
-import src.main.java.pp.block1.cc.dfa.State;
+import pp.block1.cc.dfa.Checker;
+import pp.block1.cc.dfa.MyChecker;
+import pp.block1.cc.dfa.State;
 
-import static src.main.java.pp.block1.cc.dfa.State.ID6_DFA;
+import static pp.block1.cc.dfa.State.ID6_DFA;
 
 /** Test class for Checker implementation. */
 public class CheckerTest {

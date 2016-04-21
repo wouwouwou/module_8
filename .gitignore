@@ -13,5 +13,5 @@ hs_err_pid*
 
 # intellJ
 .idea/
-gen
+gen/
 out/

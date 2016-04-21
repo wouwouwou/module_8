@@ -1,3 +1,5 @@
+package pp.block1.cp.queue;
+
 import pp.block1.cp.queue.exceptions.QueueEmptyException;
 
 public interface Queue<T> {

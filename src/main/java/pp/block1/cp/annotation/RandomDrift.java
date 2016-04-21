@@ -1,4 +1,4 @@
-package src.main.java.pp.block1.cp.annotation;
+package pp.block1.cp.annotation;
 
 public class RandomDrift extends Thread {
 

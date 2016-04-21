@@ -1,4 +1,4 @@
-package src.test.java.pp.block1.cc;
+package java.pp.block1.cc;
 
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
