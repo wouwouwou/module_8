@@ -27,5 +27,21 @@ public class USThread implements Runnable {
         System.out.print(u.getNext() + " ");
         System.out.print(u.getNext() + " ");
         System.out.print(u.getNext() + " ");
+        System.out.print(u.getNext() + " ");
+        System.out.print(u.getNext() + " ");
+        System.out.print(u.getNext() + " ");
+        System.out.print(u.getNext() + " ");
+        System.out.print(u.getNext() + " ");
+        System.out.print(u.getNext() + " ");
+        System.out.print(u.getNext() + " ");
+        System.out.print(u.getNext() + " ");
+        System.out.print(u.getNext() + " ");
+        System.out.print(u.getNext() + " ");
+        System.out.print(u.getNext() + " ");
+        System.out.print(u.getNext() + " ");
+        System.out.print(u.getNext() + " ");
+        System.out.print(u.getNext() + " ");
+        System.out.print(u.getNext() + " ");
+        System.out.print(u.getNext() + " ");
     }
 }

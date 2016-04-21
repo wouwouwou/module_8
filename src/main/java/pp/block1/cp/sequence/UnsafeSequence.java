@@ -7,7 +7,7 @@ public class UnsafeSequence {
 
     private int value;
 
-    public int getNext() {
+    public synchronized int getNext() {
         return value++;
     }
 

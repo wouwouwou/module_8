@@ -14,11 +14,13 @@ public class UnsafeSequenceTest {
         UnsafeSequence u = new UnsafeSequence();
         Thread a = new Thread(new USThread(u));
         Thread b = new Thread(new USThread(u));
+        Thread c = new Thread(new USThread(u));
         a.start();
         b.start();
+        c.start();
         a.join();
         b.join();
-        System.out.print(u.getNext() + " ");
+        c.join();
     }
 
 }
