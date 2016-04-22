@@ -10,18 +10,29 @@ public class MyScanner implements Scanner{
     @Override
     public List<String> scan(State dfa, String text) {
         List<String> res = new ArrayList<>();
-        String s = "";
         State begin = dfa;
-        for(Character c : text.toCharArray()){
+        char[] characters = text.toCharArray();
+        int i = 0;
+        int beginindex = 0;
+        int endindex = 0;
+        while (i < characters.length) {
+            char c = characters[i];
             if (dfa.hasNext(c)) {
                 dfa = dfa.getNext(c);
-                s += c;
+            } else {
+                i = endindex - 1;
+                res.add(text.substring(beginindex,endindex));
+                beginindex = endindex;
+                endindex++;
+                dfa = begin;
             }
             if (dfa.isAccepting()) {
-                res.add(s);
-                dfa = begin;
-                s = "";
+                endindex = i + 1;
             }
+            i++;
+        }
+        if (endindex != beginindex) {
+            res.add(text.substring(beginindex,endindex));
         }
         return res;
     }
