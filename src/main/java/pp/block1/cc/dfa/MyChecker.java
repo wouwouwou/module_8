@@ -13,6 +13,7 @@ public class MyChecker implements Checker{
                 s = s.getNext(c);
             } else {
                 errorstate = true;
+                break;
             }
         }
         return s.isAccepting() && !errorstate;
