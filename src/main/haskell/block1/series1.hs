@@ -120,4 +120,4 @@ totalColumns ([]:_) = []
 totalColumns xs = sum (map head xs) : totalColumns (map tail xs)
 
 main :: IO()
-main = do print (extrY 2 5 3)
+main = return()
