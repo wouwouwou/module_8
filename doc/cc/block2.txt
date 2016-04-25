@@ -1,0 +1,95 @@
+____________________________Exercise 1____________________________
+Sentential form					-->	a string is a sentential form if it occurs at a step in a valid derivation
+parse tree						--> a graph representation of a derivation
+ambiguity						--> ambiguity occurs when a sentence in the language of a grammer derives in more than one derivation
+left / right recursion			--> left recursion occurs if a nonterminal symbol can derive to a sentential form with itself as the leftmost symbol. Right recursion is the opposite.
+recursive-descent parsing		--> parsing with a set of mutually recursive procedures. Each non-terminal has such a procedure. simple and efficient for Backtrack-free grammars
+LL(x)							--> a left-to-right leftmost parser with a lookahead of x. Reads the input from left to right and uses leftmost derivation to rewrite it. Parses it top-down with a lookahead of x.
+bottom-up parsing				--> parsing from the leaves of a parse tree to the top/root. Creates a leaf node of the tree for a word returned by the scanner and works its way up with other (non)terminals to reach the top / root.
+LR(x)							--> a left-to-right rightmost parser with a lookahead of x. Reads the input from left to right and uses rightmost derivation to rewrite it. Parses it top-down with a lookahead of x.
+
+
+
+____________________________Exercise 2____________________________
+1 Sentence	-->	Subject verb Object endmark
+2 Subject 	-->	noun
+3 Subject 	-->	Modifier Subject
+4 Object 	--> noun
+5 Object 	--> Modifier Object
+6 Modifier 	--> adjective
+7 Modifier 	--> Modifier Modifier
+
+all 		smart 		undergraduate 	students 	love 	compilers	.
+adjective 	adjective 	adjective 		noun 		verb 	noun 		endmark
+
+1)
+Leftmost derivation:
+	Rule	Sentential Form
+			Sentence
+	1		Subject		verb		Object		endmark
+	3		Modifier	Subject		verb		Object	endmark
+	7		Modifier	Modifier	Subject		verb	Object	endmark
+	6		adjective	Modifier	Subject		verb	Object	endmark
+	6		adjective	adjective	Subject		verb	Object	endmark
+	3		adjective	adjective	Modifier	Subject	verb	Object	endmark
+	6		adjective	adjective	adjective	Subject	verb	Object	endmark
+	2		adjective	adjective	adjective	noun	verb	Object	endmark
+	4		adjective	adjective	adjective	noun	verb	noun	endmark
+
+Rightmost derivation:
+	Rule	Sentential Form
+			Sentence
+	1		Subject		verb		Object		endmark
+	4		Subject		verb		noun		endmark
+	3		Modifier	Subject		verb		noun	endmark
+	3		Modifier	Modifier	Subject		verb	noun	endmark
+	3		Modifier	Modifier	Modifier	Subject	verb	noun	endmark
+	2		Modifier	Modifier	Modifier	noun	verb	noun	endmark
+	6		Modifier	Modifier	adjective	noun	verb	noun	endmark
+    2		Modifier	adjective	adjective	noun	verb	noun	endmark
+    4		adjective	adjective	adjective	noun	verb	noun	endmark
+
+2) Rightmost derivation is the most clean one and does reflect the structure of the sentence in the best way,
+because of the continous derivation of the subject. However, leftmost derivation
+
+3)
+1 Sentence	-->	Subject verb Object endmark
+2 Subject 	-->	noun
+3 Subject 	-->	Modifier' Subject
+4 Object 	--> noun
+5 Object 	--> Modifier' Object
+6 Modifier 	--> adjective
+7 Modifier' --> Modifier Modifier'
+
+
+
+____________________________Exercise 3____________________________
+		assign		if		else		then		expr		e		eof
+FIRST	assign		if		else		then		expr		e		eof
+
+
+		Stat			ElsePart
+FIRST
+
+		Stat			ElsePart
+FIRST	assign
+
+		Stat			ElsePart
+FIRST	assign, if		else
+
+		Stat			ElsePart
+FIRST	assign, if		else, e
+
+
+		Stat						ElsePart
+FOLLOW
+
+		Stat						ElsePart
+FOLLOW	eof							eof
+
+		Stat						ElsePart
+FOLLOW	eof, else, assign, if		eof
+
+
+
+FIRST+
