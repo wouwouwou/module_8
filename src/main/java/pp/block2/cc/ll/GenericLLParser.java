@@ -54,7 +54,7 @@ public class GenericLLParser implements Parser {
 	 * because the token stream does not contain the expected symbols
 	 */
 	private AST parse(Symbol symb) throws ParseException {
-		// fill in
+        return null;
 	}
 
 	/** Parses the start of the token stream according to a given
@@ -68,6 +68,7 @@ public class GenericLLParser implements Parser {
 	 */
 	private AST parse(Rule rule) throws ParseException {
 		// fill in
+        return null;
 	}
 
 	/** Uses the lookup table to look up the rule to which
@@ -129,6 +130,6 @@ public class GenericLLParser implements Parser {
 
 	/** Constructs the {@link #ll1Table}. */
 	private Map<NonTerm, Map<Term, Rule>> calcLL1Table() {
-		// fill in
+        return null;
 	}
 }

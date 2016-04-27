@@ -81,15 +81,80 @@ FIRST	assign, if		else
 FIRST	assign, if		else, e
 
 
-		Stat						ElsePart
+		Stat			ElsePart
 FOLLOW
 
-		Stat						ElsePart
-FOLLOW	eof							eof
+		Stat			ElsePart
+FOLLOW	eof
 
-		Stat						ElsePart
-FOLLOW	eof, else, assign, if		eof
+		Stat			ElsePart
+FOLLOW	eof				eof
+
+		Stat			ElsePart
+FOLLOW	eof, else		eof, else
+
+		Production			FIRST set		FIRST+ set
+4		ElsePart --> e		{e}				{e, eof, else}
+
+FIRST+ of ElsePart --> e ({e, eof, else})is not disjoint with FIRST+ of ElsePart --> else Stat ({else, e}) and therefore does not meet
+the criteria for LL(1)
 
 
 
-FIRST+
+____________________________Exercise 4____________________________
+1	L 	--> 	Ra
+2		 | 		Qba
+
+3	R	-->		aba
+4		 |		caba
+5		 |		Rbc
+
+6	Q	-->		bbc
+7		 | 		bc
+
+	 	a	b	c	eof	e
+FIRST	a	b	c 	eof	e
+
+		L			R		Q
+FIRST	a, b, c		a, c	b
+
+		L				R					Q
+FOLLOW	eof				eof, a, b, c		eof, a, b
+
+Problem: left recursion at rule 5!
+
+1	L 	--> 	Ra
+2		 | 		Qba
+
+3	R	-->		abaR'
+4		 |		caba
+5		 |		bc
+
+6	Q	-->		bbc
+7		 | 		bc
+
+8	R'	-->		bcR'
+9		 |		cabaR'
+10		 |		e
+
+Showing grammar satisfies LL(1) condition:
+
+	 	a	b	c	eof	e
+FIRST	a	b	c 	eof	e
+
+		L			R			Q		R'
+FIRST				a, b, c		b		b, c, e
+
+		L			R			Q		R'
+FIRST	a, b, c		a, b, c		b		b, c, e
+
+		L				R					Q				R'
+FOLLOW	eof				eof, a				eof, a, b		eof, a
+
+		L				R					Q				R'
+FOLLOW	eof				eof, a				eof, a, b		eof, a
+
+		Production		FIRST set	FIRST+ set
+10		R'	-->	e		{e}			{e, eof, a}
+
+This satisfies the LL(1) condition!
