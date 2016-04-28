@@ -45,22 +45,7 @@ public class MyLLCalc implements LLCalc {
             }
 
             for(Rule p : g.getRules()) {
-                List<Symbol> b = p.getRHS();
-                int k = b.size() - 1;
-                Set<Term> rhs = res.get(b.get(0));
-                rhs.remove(Symbol.EMPTY);
-                int i = 0;
-
-                while (res.get(b.get(i)).contains(Symbol.EMPTY) && i <= (k-1)) {
-                    Set<Term> fbi = res.get(b.get(i + 1));
-                    fbi.remove(Symbol.EMPTY);
-                    rhs.addAll(fbi);
-                    i++;
-                }
-
-                if (i == k && res.get(b.get(k)).contains(Symbol.EMPTY)){
-                    rhs.add(Symbol.EMPTY);
-                }
+                Set<Term> rhs = getrhs(p, res);
                 res.get(p.getLHS()).addAll(rhs);
             }
             changed = !oldfirst.equals(res);
@@ -117,11 +102,38 @@ public class MyLLCalc implements LLCalc {
     public Map<Rule, Set<Term>> getFirstp() {
         HashMap<Rule, Set<Term>> res = new HashMap<>();
         Map<Symbol, Set<Term>> first = getFirst();
+        Map<NonTerm, Set<Term>> follow = getFollow();
 
         for (Rule p : g.getRules()) {
+            Set<Term> firstb = getrhs(p, first);
+            if (!firstb.contains(Symbol.EMPTY)) {
+                res.put(p, firstb);
+            } else {
+                firstb.addAll(follow.get(p.getLHS()));
+                res.put(p, firstb);
+            }
+        }
+        return res;
+    }
+
+    private Set<Term> getrhs(Rule p, Map<Symbol, Set<Term>> res) {
+        List<Symbol> b = p.getRHS();
+        int k = b.size() - 1;
+        Set<Term> rhs = res.get(b.get(0));
+        rhs.remove(Symbol.EMPTY);
+        int i = 0;
+
+        while (res.get(b.get(i)).contains(Symbol.EMPTY) && i <= (k-1)) {
+            Set<Term> fbi = res.get(b.get(i + 1));
+            fbi.remove(Symbol.EMPTY);
+            rhs.addAll(fbi);
+            i++;
         }
 
-        return res;
+        if (i == k && res.get(b.get(k)).contains(Symbol.EMPTY)){
+            rhs.add(Symbol.EMPTY);
+        }
+        return rhs;
     }
 
     @Override
