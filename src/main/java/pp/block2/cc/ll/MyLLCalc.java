@@ -6,6 +6,8 @@ import pp.block2.cc.Term;
 
 import java.util.*;
 
+import static java.util.Collections.disjoint;
+
 /**
  * Created by Wouter on 26-4-2016.
  */
@@ -138,6 +140,28 @@ public class MyLLCalc implements LLCalc {
 
     @Override
     public boolean isLL1() {
-        return false;
+        Map<NonTerm, List<Rule>> rulemap = new HashMap<>();
+        for (NonTerm a : g.getNonterminals()) {
+            rulemap.put(a, new ArrayList<>());
+        }
+        for (Rule p : g.getRules()) {
+            rulemap.get(p.getLHS()).add(p);
+        }
+        for (Map.Entry<NonTerm, List<Rule>> e : rulemap.entrySet()) {
+            Map<Rule, Set<Term>> firstp = getFirstp();
+            List<Rule> rules = e.getValue();
+            if (rules.size() > 1) {
+                int i = 0;
+                while (i < rules.size() - 1) {
+                    Set<Term> rule1 = firstp.get(rules.get(i));
+                    Set<Term> rule2 = firstp.get(rules.get(i + 1));
+                    if (!disjoint(rule1, rule2)) {
+                        return false;
+                    }
+                    i++;
+                }
+            }
+        }
+        return true;
     }
 }
