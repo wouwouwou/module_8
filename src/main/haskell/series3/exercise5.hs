@@ -2,7 +2,7 @@ module S3E5 where
 import FPPrac.Trees
 
 data BinTree = BinLeaf
-           | BinNode Int BinTree BinTree
+             | BinNode Int BinTree BinTree
 
 ppbin :: BinTree -> RoseTree
 ppbin BinLeaf = RoseNode "" []
@@ -11,11 +11,10 @@ ppbin (BinNode n t1 t2) = RoseNode (show n) [ppbin t1, ppbin t2]
 insertTree :: Int -> BinTree -> BinTree
 insertTree i BinLeaf = BinNode i BinLeaf BinLeaf
 insertTree i (BinNode n t1 t2) | i < n = BinNode n (insertTree i t1) t2
-                             | otherwise = BinNode n t1 (insertTree i t2)
+                               | otherwise = BinNode n t1 (insertTree i t2)
 
 makeTree :: [Int] -> BinTree
-makeTree [] = BinLeaf
-makeTree (x:xs) = insertTree x (makeTree xs)
+makeTree = foldr insertTree BinLeaf
 
 -- Exercise 5
 subtreeAt :: Int -> BinTree -> BinTree

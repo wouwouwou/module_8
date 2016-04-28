@@ -1,4 +1,4 @@
-module S3E5 where
+module S3E7 where
 import FPPrac.Trees
 
 data BinTree = BinLeaf Int
@@ -28,3 +28,9 @@ subTree (c:path) (BinNode _ t1 t2) | c == 'l' = subTree path t1
 
 ex7b :: IO()
 ex7b = showTree (ppbin (subTree "lr" (BinNode 1 (BinNode 2 (BinLeaf 3) (BinNode 4 (BinNode 5 (BinLeaf 6) (BinLeaf 7)) (BinLeaf 8))) (BinLeaf 9))))
+
+leftNeighbour :: String -> String
+leftNeighbour path = init path ++ ['l']
+
+rightNeighbour :: String -> String
+rightNeighbour path = init path ++ ['r']
