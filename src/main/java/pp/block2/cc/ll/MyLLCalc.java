@@ -6,6 +6,8 @@ import pp.block2.cc.Term;
 
 import java.util.*;
 
+import static java.util.Collections.disjoint;
+
 /**
  * Created by Wouter on 26-4-2016.
  */
@@ -35,27 +37,17 @@ public class MyLLCalc implements LLCalc {
             res.put(nt, new HashSet<>());
         }
 
-        boolean changed = false;
+        boolean changed = true;
         while(changed) {
-            Map<Symbol, Set<Term>> oldfirst = res;
+            Map<Symbol, Set<Term>> oldfirst = new HashMap<>();
+            for(Map.Entry<Symbol, Set<Term>> e : res.entrySet()){
+                Set<Term> copy = new HashSet<>();
+                copy.addAll(e.getValue());
+                oldfirst.put(e.getKey(), copy);
+            }
 
             for(Rule p : g.getRules()) {
-                List<Symbol> b = p.getRHS();
-                int k = b.size() - 1;
-                Set<Term> rhs = res.get(b.get(0));
-                rhs.remove(Symbol.EMPTY);
-                int i = 0;
-
-                while (res.get(b.get(i)).contains(Symbol.EMPTY) && i <= (k-1)) {
-                    Set<Term> fbi = res.get(b.get(i + 1));
-                    fbi.remove(Symbol.EMPTY);
-                    rhs.addAll(fbi);
-                    i++;
-                }
-
-                if (i == k && res.get(b.get(k)).contains(Symbol.EMPTY)){
-                    rhs.add(Symbol.EMPTY);
-                }
+                Set<Term> rhs = getrhs(p, res);
                 res.get(p.getLHS()).addAll(rhs);
             }
             changed = !oldfirst.equals(res);
@@ -72,9 +64,14 @@ public class MyLLCalc implements LLCalc {
         }
 
         res.get(g.getStart()).add(Symbol.EOF);
-        boolean changed = false;
+        boolean changed = true;
         while(changed) {
-            Map<NonTerm, Set<Term>> oldfollow = res;
+            Map<NonTerm, Set<Term>> oldfollow = new HashMap<>();
+            for(Map.Entry<NonTerm, Set<Term>> e : res.entrySet()){
+                Set<Term> copy = new HashSet<>();
+                copy.addAll(e.getValue());
+                oldfollow.put(e.getKey(), copy);
+            }
 
             for(Rule p : g.getRules()) {
                 Set<Term> trailer = res.get(p.getLHS());
@@ -95,6 +92,7 @@ public class MyLLCalc implements LLCalc {
                         }
 
                     } else trailer = s;
+                    i--;
                 }
             }
             changed = oldfollow.equals(res);
@@ -104,11 +102,66 @@ public class MyLLCalc implements LLCalc {
 
     @Override
     public Map<Rule, Set<Term>> getFirstp() {
-        return null;
+        HashMap<Rule, Set<Term>> res = new HashMap<>();
+        Map<Symbol, Set<Term>> first = getFirst();
+        Map<NonTerm, Set<Term>> follow = getFollow();
+
+        for (Rule p : g.getRules()) {
+            Set<Term> firstb = getrhs(p, first);
+            if (!firstb.contains(Symbol.EMPTY)) {
+                res.put(p, firstb);
+            } else {
+                firstb.addAll(follow.get(p.getLHS()));
+                res.put(p, firstb);
+            }
+        }
+        return res;
+    }
+
+    private Set<Term> getrhs(Rule p, Map<Symbol, Set<Term>> res) {
+        List<Symbol> b = p.getRHS();
+        int k = b.size() - 1;
+        Set<Term> rhs = res.get(b.get(0));
+        rhs.remove(Symbol.EMPTY);
+        int i = 0;
+
+        while (res.get(b.get(i)).contains(Symbol.EMPTY) && i <= (k-1)) {
+            Set<Term> fbi = res.get(b.get(i + 1));
+            fbi.remove(Symbol.EMPTY);
+            rhs.addAll(fbi);
+            i++;
+        }
+
+        if (i == k && res.get(b.get(k)).contains(Symbol.EMPTY)){
+            rhs.add(Symbol.EMPTY);
+        }
+        return rhs;
     }
 
     @Override
     public boolean isLL1() {
-        return false;
+        Map<NonTerm, List<Rule>> rulemap = new HashMap<>();
+        for (NonTerm a : g.getNonterminals()) {
+            rulemap.put(a, new ArrayList<>());
+        }
+        for (Rule p : g.getRules()) {
+            rulemap.get(p.getLHS()).add(p);
+        }
+        for (Map.Entry<NonTerm, List<Rule>> e : rulemap.entrySet()) {
+            Map<Rule, Set<Term>> firstp = getFirstp();
+            List<Rule> rules = e.getValue();
+            if (rules.size() > 1) {
+                int i = 0;
+                while (i < rules.size() - 1) {
+                    Set<Term> rule1 = firstp.get(rules.get(i));
+                    Set<Term> rule2 = firstp.get(rules.get(i + 1));
+                    if (!disjoint(rule1, rule2)) {
+                        return false;
+                    }
+                    i++;
+                }
+            }
+        }
+        return true;
     }
 }

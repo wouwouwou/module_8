@@ -21,7 +21,7 @@ public class SentenceConverter //
 
 	@Override
 	public AST parse(Lexer lexer) throws ParseException {
-		// Fill in
+		return null;
 	}
 	
 	// From here on overwrite the listener methods

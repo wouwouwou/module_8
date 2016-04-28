@@ -14,6 +14,7 @@ import org.junit.Test;
 import pp.block2.cc.AST;
 import pp.block2.cc.ParseException;
 import pp.block2.cc.Parser;
+import pp.block2.cc.antlr.SentenceConverter;
 import pp.block2.cc.ll.Sentence;
 import pp.block2.cc.ll.SentenceParser;
 
