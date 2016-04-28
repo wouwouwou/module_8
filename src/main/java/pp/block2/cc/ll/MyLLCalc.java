@@ -35,9 +35,14 @@ public class MyLLCalc implements LLCalc {
             res.put(nt, new HashSet<>());
         }
 
-        boolean changed = false;
+        boolean changed = true;
         while(changed) {
-            Map<Symbol, Set<Term>> oldfirst = res;
+            Map<Symbol, Set<Term>> oldfirst = new HashMap<>();
+            for(Map.Entry<Symbol, Set<Term>> e : res.entrySet()){
+                Set<Term> copy = new HashSet<>();
+                copy.addAll(e.getValue());
+                oldfirst.put(e.getKey(), copy);
+            }
 
             for(Rule p : g.getRules()) {
                 List<Symbol> b = p.getRHS();
@@ -72,9 +77,14 @@ public class MyLLCalc implements LLCalc {
         }
 
         res.get(g.getStart()).add(Symbol.EOF);
-        boolean changed = false;
+        boolean changed = true;
         while(changed) {
-            Map<NonTerm, Set<Term>> oldfollow = res;
+            Map<NonTerm, Set<Term>> oldfollow = new HashMap<>();
+            for(Map.Entry<NonTerm, Set<Term>> e : res.entrySet()){
+                Set<Term> copy = new HashSet<>();
+                copy.addAll(e.getValue());
+                oldfollow.put(e.getKey(), copy);
+            }
 
             for(Rule p : g.getRules()) {
                 Set<Term> trailer = res.get(p.getLHS());
@@ -95,6 +105,7 @@ public class MyLLCalc implements LLCalc {
                         }
 
                     } else trailer = s;
+                    i--;
                 }
             }
             changed = oldfollow.equals(res);
@@ -104,7 +115,13 @@ public class MyLLCalc implements LLCalc {
 
     @Override
     public Map<Rule, Set<Term>> getFirstp() {
-        return null;
+        HashMap<Rule, Set<Term>> res = new HashMap<>();
+        Map<Symbol, Set<Term>> first = getFirst();
+
+        for (Rule p : g.getRules()) {
+        }
+
+        return res;
     }
 
     @Override
