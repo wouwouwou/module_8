@@ -20,11 +20,11 @@ public class MyLLCalc implements LLCalc {
     @Override
     public Map<Symbol, Set<Term>> getFirst() {
         Map<Symbol, Set<Term>> res = new HashMap<>();
-
         Set<Term> s = new HashSet<>();
         s.addAll(g.getTerminals());
         s.add(Symbol.EMPTY);
         s.add(Symbol.EOF);
+
         for(Term t : s) {
             Set<Term> s1 = new HashSet<>();
             s1.add(t);
@@ -37,52 +37,69 @@ public class MyLLCalc implements LLCalc {
 
         boolean changed = false;
         while(changed) {
-
             Map<Symbol, Set<Term>> oldfirst = res;
 
-            //for each rule
             for(Rule p : g.getRules()) {
-                //if b is b1b2b3...bk where bi is part of T union NT then
                 List<Symbol> b = p.getRHS();
                 int k = b.size() - 1;
-
-                //rhs = first(b1) - symbol.empty
                 Set<Term> rhs = res.get(b.get(0));
                 rhs.remove(Symbol.EMPTY);
-
-                //i = 1
                 int i = 0;
 
-                //while symbol.empty is a part of first(bi) and i <= k-1
                 while (res.get(b.get(i)).contains(Symbol.EMPTY) && i <= (k-1)) {
-                    //rhs = rhs union (first(bi + 1) - symbol.empty)
                     Set<Term> fbi = res.get(b.get(i + 1));
                     fbi.remove(Symbol.EMPTY);
                     rhs.addAll(fbi);
-
-                    //i++
                     i++;
                 }
 
-                //if i == k and symbol.empty is a part of first(bk)
                 if (i == k && res.get(b.get(k)).contains(Symbol.EMPTY)){
-                    //rhs = rhs union symbol.empty
                     rhs.add(Symbol.EMPTY);
                 }
-
-                //first(lhs) = first(lhs) union rhs
                 res.get(p.getLHS()).addAll(rhs);
             }
-
             changed = !oldfirst.equals(res);
         }
-
         return res;
     }
 
     @Override
     public Map<NonTerm, Set<Term>> getFollow() {
-        return null;
+        HashMap<NonTerm, Set<Term>> res = new HashMap<>();
+
+        for (NonTerm nt : g.getNonterminals()) {
+            res.put(nt, new HashSet<>());
+        }
+
+        res.get(g.getStart()).add(Symbol.EOF);
+        boolean changed = false;
+        while(changed) {
+            Map<NonTerm, Set<Term>> oldfollow = res;
+
+            for(Rule p : g.getRules()) {
+                Set<Term> trailer = res.get(p.getLHS());
+                int i = p.getRHS().size() - 1;
+
+                while (i >= 0) {
+                    Symbol bi = p.getRHS().get(i);
+                    Set<Term> s = getFirst().get(bi);
+
+                    if (bi instanceof NonTerm && g.getNonterminals().contains(bi)) {
+                        res.get(bi).addAll(trailer);
+
+                        if (s.contains(Symbol.EMPTY)) {
+                            s.remove(Symbol.EMPTY);
+                            trailer.addAll(s);
+                        } else {
+                            trailer = s;
+                        }
+
+                    } else trailer = s;
+                }
+            }
+            changed = oldfollow.equals(res);
+        }
+        return res;
     }
 
     @Override
