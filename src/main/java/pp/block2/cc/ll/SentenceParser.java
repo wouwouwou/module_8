@@ -19,11 +19,20 @@ import pp.block2.cc.Parser;
 import pp.block2.cc.SymbolFactory;
 
 public class SentenceParser implements Parser {
-	public SentenceParser() {
-		this.fact = new SymbolFactory(Sentence.class);
-	}
-
 	private final SymbolFactory fact;
+
+    private int index;
+
+    private static final NonTerm SENT = new NonTerm("Sentence");
+    private static final NonTerm SUBJ = new NonTerm("Subject");
+    private static final NonTerm OBJ = new NonTerm("Object");
+    private static final NonTerm MOD = new NonTerm("Modifier");
+
+    private List<? extends Token> tokens;
+
+    public SentenceParser() {
+        this.fact = new SymbolFactory(Sentence.class);
+    }
 
 	@Override
 	public AST parse(Lexer lexer) throws ParseException {
@@ -31,8 +40,6 @@ public class SentenceParser implements Parser {
 		this.index = 0;
 		return parseSentence();
 	}
-
-	private List<? extends Token> tokens;
 
 	private AST parseSentence() throws ParseException {
 		AST result = new AST(SENT);
@@ -125,13 +132,6 @@ public class SentenceParser implements Parser {
 		this.index++;
 		return result;
 	}
-
-	private int index;
-
-	private static final NonTerm SENT = new NonTerm("Sentence");
-	private static final NonTerm SUBJ = new NonTerm("Subject");
-	private static final NonTerm OBJ = new NonTerm("Object");
-	private static final NonTerm MOD = new NonTerm("Modifier");
 
 	public static void main(String[] args) {
 		if (args.length == 0) {

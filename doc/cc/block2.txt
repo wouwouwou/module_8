@@ -158,3 +158,9 @@ FOLLOW	eof				a			b			a		b
 10		R'	-->	e		{e}			{e, a}
 
 This satisfies the LL(1) condition!
+
+
+
+____________________________Exercise 7____________________________
+The pars tree doesn't look alike one of our parse trees, because we did not follow the leftmost derivation exactly.
+The program works good. :)
