@@ -121,40 +121,40 @@ FIRST	a, b, c		a, c	b
 		L				R					Q
 FOLLOW	eof				eof, a, b, c		eof, a, b
 
-Problem: left recursion at rule 5!
+Problem: left recursion at rule 5 and double b at rules 6 and 7!
 
 1	L 	--> 	Ra
 2		 | 		Qba
 
 3	R	-->		abaR'
-4		 |		caba
-5		 |		bc
+4		 |		cabaR'
 
-6	Q	-->		bbc
-7		 | 		bc
+6	Q	-->		bQ'
 
-8	R'	-->		bcR'
-9		 |		cabaR'
-10		 |		e
+7	R'	-->		bcR'
+9		 |		e
+
+10	Q'	-->		bc
+		 |		c
 
 Showing grammar satisfies LL(1) condition:
 
 	 	a	b	c	eof	e
 FIRST	a	b	c 	eof	e
 
-		L			R			Q		R'
-FIRST				a, b, c		b		b, c, e
+		L			R			Q		R'			Q'
+FIRST				a, c		b		b, e		b, c
 
-		L			R			Q		R'
-FIRST	a, b, c		a, b, c		b		b, c, e
+		L			R			Q		R'			Q'
+FIRST	a, b, c		a, c		b		b, e		b, c
 
-		L				R					Q				R'
-FOLLOW	eof				eof, a				eof, a, b		eof, a
+		L				R			Q			R'		Q'
+FOLLOW	eof
 
-		L				R					Q				R'
-FOLLOW	eof				eof, a				eof, a, b		eof, a
+		L				R			Q			R'		Q'
+FOLLOW	eof				a			b			a		b
 
 		Production		FIRST set	FIRST+ set
-10		R'	-->	e		{e}			{e, eof, a}
+10		R'	-->	e		{e}			{e, a}
 
 This satisfies the LL(1) condition!
