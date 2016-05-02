@@ -1,9 +1,6 @@
 package pp.block2.cc.ll;
 
-import java.util.HashMap;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import org.antlr.v4.runtime.Lexer;
 import org.antlr.v4.runtime.Token;
@@ -130,6 +127,23 @@ public class GenericLLParser implements Parser {
 
 	/** Constructs the {@link #ll1Table}. */
 	private Map<NonTerm, Map<Term, Rule>> calcLL1Table() {
-        return null;
+        Map<NonTerm, Map<Term, Rule>> res = new HashMap<>();
+        for (NonTerm A : g.getNonterminals()) {
+            Map<Term, Rule> innermap = new HashMap<>();
+            for (Term w : g.getTerminals()) {
+                innermap.put(w, null);
+            }
+            res.put(A, innermap);
+            for (Rule r : g.getRules()) {
+                Set<Term> firstpset = calc.getFirstp().get(r);
+                for (Term w : firstpset) {
+                    res.get(A).put(w, r);
+                }
+                if (firstpset.contains(Symbol.EOF)) {
+                    res.get(A).put(Symbol.EOF, r);
+                }
+            }
+        }
+        return res;
 	}
 }
