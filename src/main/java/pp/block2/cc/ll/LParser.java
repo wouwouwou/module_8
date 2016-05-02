@@ -8,76 +8,120 @@ import pp.block2.cc.*;
 
 import java.util.List;
 
-import static pp.block2.cc.ll.Sentence.*;
+import static pp.block2.cc.ll.L.*;
 
 public class LParser implements Parser {
 	private final SymbolFactory fact;
 
     private int index;
 
-    private static final NonTerm SENT = new NonTerm("Sentence");
-    private static final NonTerm SUBJ = new NonTerm("Subject");
-    private static final NonTerm OBJ = new NonTerm("Object");
-    private static final NonTerm MOD = new NonTerm("Modifier");
+    private static final NonTerm L = new NonTerm("L");
+    private static final NonTerm R = new NonTerm("R");
+    private static final NonTerm Q = new NonTerm("Q");
+    private static final NonTerm R2 = new NonTerm("R2");
+    private static final NonTerm Q2 = new NonTerm("Q2");
 
     private List<? extends Token> tokens;
 
     public LParser() {
-        this.fact = new SymbolFactory(Sentence.class);
+        this.fact = new SymbolFactory(L.class);
     }
 
 	@Override
 	public AST parse(Lexer lexer) throws ParseException {
 		this.tokens = lexer.getAllTokens();
 		this.index = 0;
-		return parseSentence();
+		return parseL();
 	}
 
-	private AST parseSentence() throws ParseException {
-		AST result = new AST(SENT);
-		// there is only one rule, no need to look at token
-		result.addChild(parseSubject());
-		result.addChild(parseToken(VERB));
-		result.addChild(parseObject());
-		result.addChild(parseToken(ENDMARK));
-		return result;
+	private AST parseL() throws ParseException {
+		AST result = new AST(L);
+        Token next = peek();
+        switch (next.getType()) {
+            case A:
+                result.addChild(parseR());
+                result.addChild(parseToken(A));
+                break;
+            case C:
+                result.addChild(parseR());
+                result.addChild(parseToken(A));
+                break;
+            case B:
+                result.addChild(parseQ());
+                result.addChild(parseToken(B));
+                result.addChild(parseToken(A));
+                break;
+            default:
+                throw unparsable(L);
+        }
+        return result;
 	}
 
-	private AST parseSubject() throws ParseException {
-		AST result = new AST(SUBJ);
+	private AST parseR() throws ParseException {
+		AST result = new AST(R);
 		Token next = peek();
 		// choose between rules based on the lookahead
 		switch (next.getType()) {
-		case ADJECTIVE:
-			result.addChild(parseModifier());
-			result.addChild(parseSubject());
+		case A:
+            result.addChild(parseToken(A));
+            result.addChild(parseToken(B));
+            result.addChild(parseToken(A));
+            result.addChild(parseR2());
 			break;
-		case NOUN:
-			result.addChild(parseToken(NOUN));
+		case C:
+            result.addChild(parseToken(C));
+            result.addChild(parseToken(A));
+            result.addChild(parseToken(B));
+            result.addChild(parseToken(A));
+            result.addChild(parseR2());
 			break;
 		default:
-			throw unparsable(SUBJ);
+			throw unparsable(R);
 		}
 		return result;
 	}
 
-	private AST parseObject() throws ParseException {
-		AST result = new AST(OBJ);
-		Token next = peek();
-		// choose between rules based on the lookahead
-		switch (next.getType()) {
-		case ADJECTIVE:
-			result.addChild(parseModifier());
-			result.addChild(parseObject());
-			break;
-		case NOUN:
-			result.addChild(parseToken(NOUN));
-			break;
-		default:
-			throw unparsable(OBJ);
-		}
-		return result;
-	}
+    private AST parseQ() throws ParseException {
+        AST result = new AST(Q);
+        result.addChild(parseToken(B));
+        result.addChild(parseQ2());
+        return result;
+    }
+
+    private AST parseR2() throws ParseException {
+        AST result = new AST(R2);
+        Token next = peek();
+        // choose between rules based on the lookahead
+        switch (next.getType()) {
+            case B:
+                result.addChild(parseToken(B));
+                result.addChild(parseToken(C));
+                result.addChild(parseR2());
+                break;
+            default:
+                break;
+        }
+        return result;
+    }
+
+    private AST parseQ2() throws ParseException {
+        AST result = new AST(Q2);
+        Token next = peek();
+        // choose between rules based on the lookahead
+        switch (next.getType()) {
+            case B:
+                result.addChild(parseToken(B));
+                result.addChild(parseToken(C));
+                break;
+            //TODO check this could give error
+            case C:
+                result.addChild(parseToken(C));
+                break;
+            default:
+                throw unparsable(R);
+        }
+        return result;
+    }
 
 	private ParseException unparsable(NonTerm nt) {
 		try {
@@ -89,13 +133,6 @@ public class LParser implements Parser {
 		} catch (ParseException e) {
 			return e;
 		}
-	}
-
-	private AST parseModifier() throws ParseException {
-		AST result = new AST(MOD);
-		// there is only one rule, no need to look at the next token
-		result.addChild(parseToken(ADJECTIVE));
-		return result;
 	}
 
 	/** Creates an AST based on the expected token type. */
@@ -131,7 +168,7 @@ public class LParser implements Parser {
 		} else {
 			for (String text : args) {
 				CharStream stream = new ANTLRInputStream(text);
-				Lexer lexer = new Sentence(stream);
+				Lexer lexer = new L(stream);
 				try {
 					System.out.printf("Parse tree: %n%s%n",
 							new LParser().parse(lexer));
