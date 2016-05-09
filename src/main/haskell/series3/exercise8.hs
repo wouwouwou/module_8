@@ -35,11 +35,6 @@ makeTree [] = Empty
 makeTree xs = BinNode (xs !! half) (makeTree (take half xs)) (makeTree (drop (half+1) xs))
             where half = length xs `quot` 2
 
-insertTree :: Int -> BinTree -> BinTree
-insertTree i Empty = BinNode i Empty Empty
-insertTree i (BinNode n t1 t2) | i < n = BinNode n (insertTree i t1) t2
-                               | otherwise = BinNode n t1 (insertTree i t2)
-
 balance :: BinTree -> BinTree
 balance t = makeTree (sort (makeList t))
 
