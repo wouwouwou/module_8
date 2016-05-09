@@ -1,16 +1,15 @@
 grammar Expr;
 
-expr	: term expr2;
-expr2	: PLUS term expr2
-		| MIN term expr2;
-term	: factor term2;
-term2	: MULT factor term2
-		| <assoc=right>EXP factor term2;
-factor	: PARENTHOPEN expr PARENTHCLOSE
-		| (MIN)* DIG;
+goal	: expr EOF;
+expr	: PARENTHOPEN expr PARENTHCLOSE 	#exprPar
+		| <assoc=right> expr EXP expr 		#exprExp
+		| expr MULT expr 					#expMul
+		| expr (PLUS|MIN) expr				#expPM
+		| num								#expNum;
+num		: DIG								#numPos
+		| MIN num							#numNeg;
 
-
-DIG : ('0'..'9')+;
+DIG : '0' | ('1'..'9')('0'..'9')*;
 PLUS : '+';
 MIN : '-';
 EXP : '^';
