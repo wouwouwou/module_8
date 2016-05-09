@@ -9,7 +9,9 @@ subject	: modifier subject	# modSubject
 /** Grammatical object in a sentence. */
 object: modifier object | NOUN;
 /** Modifier in an object or subject. */
-modifier: ADJECTIVE;
+modifier: <assoc=right> modifier ',' modifier
+		| ADJECTIVE
+		;
 
 NOUN : 'students' | 'compilers' ;
 VERB : 'love' ;

@@ -185,3 +185,6 @@ Instead of a SubjectContext we now have a ModSubjectContext and a SimpleSubjectC
 These classes extend the SubjectContext class and therefore inherit everything from it. However, their fields and
 methods are following the rule alternative they are for. (fields modifier subject vs noun, methods which use those fields).
 
+2) It corresponds more with the rightmost parse tree now, because the assoc now results in a rightmost derivation of the modifiers.
+If you leave the assoc it will go back to a leftmost parse tree.
+
