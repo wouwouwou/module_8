@@ -23,7 +23,7 @@ public class SentenceCounter extends SentenceBaseListener {
 	private int errorCount;
 
 	public void process(String text) {
-		this.depths = new ParseTreeProperty<Integer>();
+		this.depths = new ParseTreeProperty<>();
 		this.termCount = 0;
 		this.errorCount = 0;
 		Lexer lexer = new SentenceLexer(new ANTLRInputStream(text));

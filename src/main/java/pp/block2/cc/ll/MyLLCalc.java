@@ -74,12 +74,14 @@ public class MyLLCalc implements LLCalc {
             }
 
             for(Rule p : g.getRules()) {
-                Set<Term> trailer = res.get(p.getLHS());
+                Set<Term> trailer = new HashSet<>();
+                trailer.addAll(res.get(p.getLHS()));
                 int i = p.getRHS().size() - 1;
 
                 while (i >= 0) {
                     Symbol bi = p.getRHS().get(i);
-                    Set<Term> s = getFirst().get(bi);
+                    Set<Term> s = new HashSet<>();
+                    s.addAll(getFirst().get(bi));
 
                     if (bi instanceof NonTerm && g.getNonterminals().contains(bi)) {
                         res.get(bi).addAll(trailer);
@@ -88,14 +90,18 @@ public class MyLLCalc implements LLCalc {
                             s.remove(Symbol.EMPTY);
                             trailer.addAll(s);
                         } else {
-                            trailer = s;
+                            trailer.clear();
+                            trailer.addAll(s);
                         }
 
-                    } else trailer = s;
+                    } else {
+                        trailer.clear();
+                        trailer.addAll(s);
+                    }
                     i--;
                 }
             }
-            changed = oldfollow.equals(res);
+            changed = !oldfollow.equals(res);
         }
         return res;
     }
@@ -107,7 +113,8 @@ public class MyLLCalc implements LLCalc {
         Map<NonTerm, Set<Term>> follow = getFollow();
 
         for (Rule p : g.getRules()) {
-            Set<Term> firstb = getrhs(p, first);
+            Set<Term> firstb = new HashSet<>();
+            firstb.addAll(getrhs(p, first));
             if (!firstb.contains(Symbol.EMPTY)) {
                 res.put(p, firstb);
             } else {
@@ -121,12 +128,14 @@ public class MyLLCalc implements LLCalc {
     private Set<Term> getrhs(Rule p, Map<Symbol, Set<Term>> res) {
         List<Symbol> b = p.getRHS();
         int k = b.size() - 1;
-        Set<Term> rhs = res.get(b.get(0));
+        Set<Term> rhs = new HashSet<>();
+        rhs.addAll(res.get(b.get(0)));
         rhs.remove(Symbol.EMPTY);
         int i = 0;
 
         while (res.get(b.get(i)).contains(Symbol.EMPTY) && i <= (k-1)) {
-            Set<Term> fbi = res.get(b.get(i + 1));
+            Set<Term> fbi = new HashSet<>();
+            fbi.addAll(res.get(b.get(i + 1)));
             fbi.remove(Symbol.EMPTY);
             rhs.addAll(fbi);
             i++;
