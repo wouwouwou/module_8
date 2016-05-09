@@ -164,3 +164,24 @@ This satisfies the LL(1) condition!
 ____________________________Exercise 7____________________________
 The pars tree doesn't look alike one of our parse trees, because we did not follow the leftmost derivation exactly.
 The program works good. :)
+
+
+
+____________________________Exercise 9____________________________
+Output:
+(sentence (subject (modifier all) (subject (modifier smart) (subject (modifier undergraduate) (subject students)))) love (object (modifier all) (object compilers)) .)
+line 1:18 no viable alternative at input 'love'
+(sentence (subject (modifier all) (subject students)) love (object love) .)
+
+line 1 is the viable input. It shows the parse tree in another way.
+line 2 is the error for the unviable input. Error says where it goes wrong.
+line 3 is the parse tree which it made
+
+
+
+____________________________Exercise 11____________________________
+1) Not only the entry/exit methods are specified in two alternatives, also the parameters are specified in those alternatives.
+Instead of a SubjectContext we now have a ModSubjectContext and a SimpleSubjectContext which is imported from the parser.
+These classes extend the SubjectContext class and therefore inherit everything from it. However, their fields and
+methods are following the rule alternative they are for. (fields modifier subject vs noun, methods which use those fields).
+
