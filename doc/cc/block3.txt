@@ -1,0 +1,187 @@
+____________________________Exercise 1____________________________
+Operator overloading			-->
+type inference					-->
+synthesized attribute			-->
+inherited attribute				-->
+syntax-directed translation		-->
+
+
+
+____________________________Exercise 2____________________________
+1 Sentence	-->	Subject verb Object endmark
+2 Subject 	-->	noun
+3 Subject 	-->	Modifier Subject
+4 Object 	--> noun
+5 Object 	--> Modifier Object
+6 Modifier 	--> adjective
+7 Modifier 	--> Modifier Modifier
+
+all 		smart 		undergraduate 	students 	love 	compilers	.
+adjective 	adjective 	adjective 		noun 		verb 	noun 		endmark
+
+1)
+Leftmost derivation:
+	Rule	Sentential Form
+			Sentence
+	1		Subject		verb		Object		endmark
+	3		Modifier	Subject		verb		Object	endmark
+	7		Modifier	Modifier	Subject		verb	Object	endmark
+	6		adjective	Modifier	Subject		verb	Object	endmark
+	6		adjective	adjective	Subject		verb	Object	endmark
+	3		adjective	adjective	Modifier	Subject	verb	Object	endmark
+	6		adjective	adjective	adjective	Subject	verb	Object	endmark
+	2		adjective	adjective	adjective	noun	verb	Object	endmark
+	4		adjective	adjective	adjective	noun	verb	noun	endmark
+
+Rightmost derivation:
+	Rule	Sentential Form
+			Sentence
+	1		Subject		verb		Object		endmark
+	4		Subject		verb		noun		endmark
+	3		Modifier	Subject		verb		noun	endmark
+	3		Modifier	Modifier	Subject		verb	noun	endmark
+	3		Modifier	Modifier	Modifier	Subject	verb	noun	endmark
+	2		Modifier	Modifier	Modifier	noun	verb	noun	endmark
+	6		Modifier	Modifier	adjective	noun	verb	noun	endmark
+    2		Modifier	adjective	adjective	noun	verb	noun	endmark
+    4		adjective	adjective	adjective	noun	verb	noun	endmark
+
+2) Rightmost derivation is the most clean one and does reflect the structure of the sentence in the best way,
+because of the continous derivation of the subject. However, leftmost derivation
+
+3)
+1 Sentence	-->	Subject verb Object endmark
+2 Subject 	-->	noun
+3 Subject 	-->	Modifier' Subject
+4 Object 	--> noun
+5 Object 	--> Modifier' Object
+6 Modifier 	--> adjective
+7 Modifier' --> Modifier Modifier'
+
+
+
+____________________________Exercise 3____________________________
+		assign		if		else		then		expr		e		eof
+FIRST	assign		if		else		then		expr		e		eof
+
+
+		Stat			ElsePart
+FIRST
+
+		Stat			ElsePart
+FIRST	assign
+
+		Stat			ElsePart
+FIRST	assign, if		else
+
+		Stat			ElsePart
+FIRST	assign, if		else, e
+
+
+		Stat			ElsePart
+FOLLOW
+
+		Stat			ElsePart
+FOLLOW	eof
+
+		Stat			ElsePart
+FOLLOW	eof				eof
+
+		Stat			ElsePart
+FOLLOW	eof, else		eof, else
+
+		Production			FIRST set		FIRST+ set
+4		ElsePart --> e		{e}				{e, eof, else}
+
+FIRST+ of ElsePart --> e ({e, eof, else})is not disjoint with FIRST+ of ElsePart --> else Stat ({else, e}) and therefore does not meet
+the criteria for LL(1)
+
+
+
+____________________________Exercise 4____________________________
+1	L 	--> 	Ra
+2		 | 		Qba
+
+3	R	-->		aba
+4		 |		caba
+5		 |		Rbc
+
+6	Q	-->		bbc
+7		 | 		bc
+
+	 	a	b	c	eof	e
+FIRST	a	b	c 	eof	e
+
+		L			R		Q
+FIRST	a, b, c		a, c	b
+
+		L				R					Q
+FOLLOW	eof				eof, a, b, c		eof, a, b
+
+Problem: left recursion at rule 5 and double b at rules 6 and 7!
+
+1	L 	--> 	Ra
+2		 | 		Qba
+
+3	R	-->		abaR'
+4		 |		cabaR'
+
+6	Q	-->		bQ'
+
+7	R'	-->		bcR'
+9		 |		e
+
+10	Q'	-->		bc
+		 |		c
+
+Showing grammar satisfies LL(1) condition:
+
+	 	a	b	c	eof	e
+FIRST	a	b	c 	eof	e
+
+		L			R			Q		R'			Q'
+FIRST				a, c		b		b, e		b, c
+
+		L			R			Q		R'			Q'
+FIRST	a, b, c		a, c		b		b, e		b, c
+
+		L				R			Q			R'		Q'
+FOLLOW	eof
+
+		L				R			Q			R'		Q'
+FOLLOW	eof				a			b			a		b
+
+		Production		FIRST set	FIRST+ set
+10		R'	-->	e		{e}			{e, a}
+
+This satisfies the LL(1) condition!
+
+
+
+____________________________Exercise 7____________________________
+The pars tree doesn't look alike one of our parse trees, because we did not follow the leftmost derivation exactly.
+The program works good. :)
+
+
+
+____________________________Exercise 9____________________________
+Output:
+(sentence (subject (modifier all) (subject (modifier smart) (subject (modifier undergraduate) (subject students)))) love (object (modifier all) (object compilers)) .)
+line 1:18 no viable alternative at input 'love'
+(sentence (subject (modifier all) (subject students)) love (object love) .)
+
+line 1 is the viable input. It shows the parse tree in another way.
+line 2 is the error for the unviable input. Error says where it goes wrong.
+line 3 is the parse tree which it made
+
+
+
+____________________________Exercise 11____________________________
+1) Not only the entry/exit methods are specified in two alternatives, also the parameters are specified in those alternatives.
+Instead of a SubjectContext we now have a ModSubjectContext and a SimpleSubjectContext which is imported from the parser.
+These classes extend the SubjectContext class and therefore inherit everything from it. However, their fields and
+methods are following the rule alternative they are for. (fields modifier subject vs noun, methods which use those fields).
+
+2) It corresponds more with the rightmost parse tree now, because the assoc now results in a rightmost derivation of the modifiers.
+If you leave the assoc it will go back to a leftmost parse tree.
+
