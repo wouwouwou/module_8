@@ -1,5 +1,5 @@
 ____________________________Exercise 1____________________________
-Operator overloading			-->
+Operator overloading			--> a technique where operators are implemented in user-defined types with customized logic based on the types of the arguments passed.
 type inference					-->
 synthesized attribute			-->
 inherited attribute				-->
