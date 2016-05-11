@@ -109,7 +109,7 @@ findFSA c | isOperator c = Just fsaOprt
 findToken :: String -> (FsaState -> Char -> FsaState) -> FsaState -> String -> (Token, String)
 findToken res _fsa _s []     = (tok, "")
                              where tok = makeToken res
-findToken res fsa  s  (c:cs) | r == R = findToken (res++[c]) fsa r cs
+findToken res fsa  s  (c:cs) | r /= Q = findToken (res++[c]) fsa r cs
                              | otherwise = (tok, c:cs)
                              where
                                r = fsa s c
