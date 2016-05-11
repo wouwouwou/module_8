@@ -28,6 +28,7 @@ public class CalcTest {
 		test(5, "3+2");
 		test(7, "1+2*3");
 		test(9, "(1+2)*3");
+        test(12, "14+-2");
 	}
 
 	private void test(int expected, String expr) {
