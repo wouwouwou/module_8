@@ -24,4 +24,4 @@ subtreeAt i (BinNode n t1 t2) | i == n = BinNode i t1 t2
                               | otherwise = subtreeAt i t2
 
 ex5 :: IO()
-ex5 = showTree (ppbin (subtreeAt 4 (makeTree [4,3,7,5,6,1,8,11,9,2,4,10])))
+ex5 = showTreeList [ppbin $ subtreeAt 4 $ makeTree [4,3,7,5,6,1,8,11,9,2,4,10], ppbin $ makeTree [4,3,7,5,6,1,8,11,9,2,4,10]]

@@ -38,7 +38,7 @@ toOperator _ = error ""
 
 parse :: NT -> String -> (Tree, String)
 parse E (x:xs) | x == '('  = (BinNode n t1 t2, tail r3) -- verwacht: '(' E O E ')'
-               | isDigit x = parse N [x]
+               | isDigit x = parse N (x:xs)
                | otherwise = error ""
                where
                  (t1, r1) = parse E xs -- E
@@ -51,8 +51,8 @@ type TreeExt = BinTree Operator (Either Int Char)
 
 parse' :: NT -> String -> (TreeExt, String)
 parse' E (x:xs) | x == '('   = (BinNode n t1 t2, tail r3) -- verwacht: '(' E O E ')'
-                | isDigit x  = parse' N [x]
-                | isLetter x = parse' V [x]
+                | isDigit x  = parse' N (x:xs)
+                | isLetter x = parse' V (x:xs)
                 where
                   (t1, r1) = parse' E xs -- E
                   (n,  r2) = (toOperator (head r1), tail r1) -- O

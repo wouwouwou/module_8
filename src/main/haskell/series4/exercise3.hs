@@ -3,7 +3,7 @@ import Data.Char
 import Data.Maybe
 import FPPrac.Trees
 
-data Token = TokNum Int
+data Token = TokNum Float
            | TokId String
            | TokOp Operator
            | TokLB
@@ -29,20 +29,24 @@ toOperator _ = error ""
 
 data FsaState = Q
               | R
+              | S
               deriving (Show, Eq)
 
 fsaNmbr :: FsaState -> Char -> FsaState
 fsaNmbr s x = case s of
   Q | isDigit x -> R
-    | x == '.'  -> R
+    | x == '~'  -> R
     | otherwise -> Q
   R | isDigit x -> R
-    | x == '.'  -> R
+    | x == '.'  -> S
+    | otherwise -> Q
+  S | isDigit x -> S
     | otherwise -> Q
 
 testFsaNmbr = do
   print $ foldl fsaNmbr Q "123"
   print $ foldl fsaNmbr Q "12.34"
+  print $ foldl fsaNmbr Q "12.34.56"
 
 fsaIdnt :: FsaState -> Char -> FsaState
 fsaIdnt s x = case s of
@@ -97,6 +101,7 @@ tokenize (c:cs) | isNothing fsa = error "parse error"
 findFSA :: Char -> Maybe (FsaState -> Char -> FsaState)
 findFSA c | isOperator c = Just fsaOprt
           | isDigit c    = Just fsaNmbr
+          | c == '~'     = Just fsaNmbr
           | isAlpha c    = Just fsaIdnt
           | isBracket c  = Just fsaBrck
           | otherwise    = Nothing
@@ -104,7 +109,7 @@ findFSA c | isOperator c = Just fsaOprt
 findToken :: String -> (FsaState -> Char -> FsaState) -> FsaState -> String -> (Token, String)
 findToken res _fsa _s []     = (tok, "")
                              where tok = makeToken res
-findToken res fsa  s  (c:cs) | r == R = findToken (res++[c]) fsa r cs
+findToken res fsa  s  (c:cs) | r /= Q = findToken (res++[c]) fsa r cs
                              | otherwise = (tok, c:cs)
                              where
                                r = fsa s c
@@ -113,6 +118,7 @@ findToken res fsa  s  (c:cs) | r == R = findToken (res++[c]) fsa r cs
 makeToken :: String -> Token
 makeToken (c:cs) | isOperator c = TokOp (toOperator c)
                  | isDigit c    = TokNum (read (c:cs))
+                 | c == '~'     = TokNum (-1 * read cs)
                  | isAlpha c    = TokId (c:cs)
                  | c == '('     = TokLB
                  | c == ')'     = TokRB
@@ -127,7 +133,7 @@ pp :: (Show a, Show b) => BinTree a b -> RoseTree
 pp (BinLeaf n) = RoseNode (show n) []
 pp (BinNode n t1 t2) = RoseNode (show n) [pp t1, pp t2]
 
-type Tree = BinTree Operator (Either Int String)
+type Tree = BinTree Operator (Either Float String)
 
 parse :: [Token] -> (Tree, [Token])
 parse []            = error "empty tree"
@@ -140,20 +146,20 @@ parse (TokNum i:ts) = (BinLeaf (Left i), ts)
 parse (TokId  s:ts) = (BinLeaf (Right s), ts)
 
 -- Exercise 5
-eval :: String -> [(String, Int)] -> Int
+eval :: String -> [(String, Float)] -> Float
 eval s l = evaluate l $ fst $ parse $ tokenize s
 
-evaluate :: [(String, Int)] -> Tree -> Int
+evaluate :: [(String, Float)] -> Tree -> Float
 evaluate _ (BinLeaf (Left i))  = i
 evaluate l (BinLeaf (Right s)) = find s l
 evaluate l (BinNode o t1 t2)   = case o of
   Pls -> evaluate l t1 + evaluate l t2
   Min -> evaluate l t1 - evaluate l t2
   Mlt -> evaluate l t1 * evaluate l t2
-  Div -> evaluate l t1 `div` evaluate l t2
-  Pow -> evaluate l t1 ^ evaluate l t2
+  Div -> evaluate l t1 / evaluate l t2
+  Pow -> evaluate l t1 ** evaluate l t2
 
-find :: String -> [(String, Int)] -> Int
+find :: String -> [(String, Float)] -> Float
 find q []         = error (q++" not found")
 find q ((k,v):ks) | k == q = v
                   | otherwise = find q ks
