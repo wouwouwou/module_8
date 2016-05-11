@@ -68,6 +68,7 @@ ____________________________Exercise 3____________________________
 FIRST	assign		if		else		then		expr		e		eof
 
 
+
 		Stat			ElsePart
 FIRST
 
@@ -81,6 +82,7 @@ FIRST	assign, if		else
 FIRST	assign, if		else, e
 
 
+
 		Stat			ElsePart
 FOLLOW
 
@@ -92,6 +94,7 @@ FOLLOW	eof				eof
 
 		Stat			ElsePart
 FOLLOW	eof, else		eof, else
+
 
 		Production			FIRST set		FIRST+ set
 4		ElsePart --> e		{e}				{e, eof, else}
