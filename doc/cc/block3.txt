@@ -77,3 +77,15 @@ Action based advantages: Way less code, no need to make a listener class.
 
 Listener based advantages: Very simple and clear Antlr grammar, very modular to edit its behavior because of the separation
 of grammar and listener.
+
+
+3)
+Adding a println statement before the PAR rule does the same; printing something.
+Placing it before the expression rules it gives an error: Following sets of rules are mutually left-recursive
+The difference is therefore in that the first two subrules are left-recursive, where the PAR subrule isn't. The left-recurive
+condition can be an infinite loop, and therefore infinitely print the message at the begin of the statement.
+
+
+4)
+There exist two types of methods: entrySomething and exitSomething. If the attribute is synthesized, the child nodes should be evaluated first, which
+you can do with the entry method. Inherited attributes can use the exit method to pass its type to its parent / siblings.
