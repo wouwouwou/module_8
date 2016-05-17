@@ -58,13 +58,13 @@ str		-		-		bool
 
 
 2)
-T.type		<--		F^(T1.type, T2.type)
-T.type		<--		F+(T1.type, T2.type)
-T.type		<--		F=(T1.type, T2.type)
-T.type		<--		T.type
-T.type 		<--		num.type
-T.type 		<--		bool.type
-T.type 		<--		str.type
+1 T.type		<--		F^(T1.type, T2.type)
+2 T.type		<--		F+(T1.type, T2.type)
+3 T.type		<--		F=(T1.type, T2.type)
+4 T.type		<--		T.type
+5 T.type 		<--		num.type
+6 T.type 		<--		bool.type
+7 T.type 		<--		str.type
 
 3)
 Synthesized. (from children T1 and T2 or base types)
@@ -73,7 +73,7 @@ Synthesized. (from children T1 and T2 or base types)
 
 ____________________________Exercise 4____________________________
 2)
-Action based advantages: Way less code, no need to make a listener class.
+Action based advantages: Way less code, no need to make a listener class, antlr does it for you.
 
 Listener based advantages: Very simple and clear Antlr grammar, very modular to edit its behavior because of the separation
 of grammar and listener.

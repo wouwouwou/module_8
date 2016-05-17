@@ -1,10 +1,7 @@
 package pp.block3.cc.symbol;
 
-import pp.block2.cc.Symbol;
-
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Set;
 import java.util.Stack;
 
 /**
