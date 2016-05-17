@@ -2,8 +2,11 @@ grammar TGrammarAttr;
 
 t returns [ Type type ]
   : t0=t HAT t1=t
-    { $type = ($t0.type == Type.NUM && $t1.type == Type.NUM) ? Type.NUM : ($t0.type == Type.STR && $t1.type == Type.NUM) ? Type.STR : Type.ERR; }
-    {  }
+    { $type = ($t0.type == Type.NUM && $t1.type == Type.NUM) ?
+        Type.NUM :
+        ($t0.type == Type.STR && $t1.type == Type.NUM) ?
+            Type.STR :
+            Type.ERR; }
   | t0=t PLUS t1=t
     { $type = ($t0.type == $t1.type) ? $t0.type : Type.ERR; }
   | t0=t EQUALS t1=t

@@ -23,6 +23,7 @@ public class TGrammarTest {
     public void testHat() {
         test(Type.NUM, "2^3");
         test(Type.STR, "\"ab\"^3");
+        test(Type.ERR, "3^\"ab\"");
     }
 
     @Test
