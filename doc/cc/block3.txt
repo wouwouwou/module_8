@@ -72,3 +72,8 @@ Synthesized. (from children T1 and T2 or base types)
 
 
 ____________________________Exercise 4____________________________
+2)
+Action based advantages: Way less code, no need to make a listener class.
+
+Listener based advantages: Very simple and clear Antlr grammar, very modular to edit its behavior because of the separation
+of grammar and listener.
