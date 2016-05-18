@@ -89,3 +89,15 @@ condition can be an infinite loop, and therefore infinitely print the message at
 4)
 There exist two types of methods: entrySomething and exitSomething. If the attribute is synthesized, the child nodes should be evaluated first, which
 you can do with the entry method. Inherited attributes can use the exit method to pass its type to its parent / siblings.
+
+
+
+____________________________Exercise 9____________________________
+1)
+syntaxError of BaseErrorListener has 6 parameters:
+* Recognizer<?, ?> recognizer		| the recognizer which recognized the error
+* Object offendingSymbol			| the symbol where the error occurred
+* int line							| the line where the error occurred
+* int charPositionInLine			| the char position in the line where the error occurred
+* String msg						| the error message
+* RecognitionException e			| extension of RuntimeException, specified for the recognizer in the first parameter
