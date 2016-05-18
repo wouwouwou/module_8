@@ -25,29 +25,208 @@ adjective 	adjective 	adjective 		noun 		verb 	noun 		endmark
 1)
 Leftmost derivation:
 	Rule	Sentential Form
-			Sentence
-	1		Subject		verb		Object		endmark
-	3		Modifier	Subject		verb		Object	endmark
-	7		Modifier	Modifier	Subject		verb	Object	endmark
-	6		adjective	Modifier	Subject		verb	Object	endmark
-	6		adjective	adjective	Subject		verb	Object	endmark
-	3		adjective	adjective	Modifier	Subject	verb	Object	endmark
-	6		adjective	adjective	adjective	Subject	verb	Object	endmark
-	2		adjective	adjective	adjective	noun	verb	Object	endmark
-	4		adjective	adjective	adjective	noun	verb	noun	endmark
+			     S
+		  	 /     \ \ \
+	1	 	U       v O e
+	        |\        |
+	3	    M U       O
+	        |\ \      |
+    7		M M U     O
+            | | |     |
+	6       a M U     O
+	          | |     |
+	6         a U     O
+	            |\    |
+	3           M U   O
+	            | |   |
+	6           a n   O
+	                  |
+	2                 O
+	                  |
+	4                 n
+
+	Rule	Sentential Form
+			     S
+		  	  /    \ \ \
+	1	 	 U      v O e
+	         /\       |
+	3	    M  \      n
+	        |  |
+	6       a  U
+	           /\
+	3         M  \
+	          |  |
+	6         a  U
+	             /\
+	3           M U
+	            | |
+	6           a n
+
+	2
+
+	4
+
+	Rule	Sentential Form
+			     S
+		  	  /    \ \ \
+	1	 	 U      v O e
+	         /\       |
+	3	    M  U      n
+	        |  |
+	6       a  U
+	           /\
+	3         M  U
+	          |  /\
+    7         a M n
+                |
+    6           a
+
+    6
+
+    2
+
+    4
+
+    Rule	Sentential Form
+			     S
+		  	  /    \ \ \
+	1	 	 U      v O e
+	         /\       |
+	3	    M  U      n
+	        |\  \
+    7		M M  n
+            |\ \
+    7       M M a
+            | |
+    6       a a
+
+    6
+
+    6
+
+    2
+
+    4
+
+    Rule	Sentential Form
+			     S
+		  	  /    \ \ \
+	1	 	 U      v O e
+	         /\       |
+	3	    M  n      n
+	        |\
+    7		a M
+              |
+    6         M
+              |\
+    7         M M
+              | |
+    6         a a
+
+    6
+
+    2
+
+    4
 
 Rightmost derivation:
 	Rule	Sentential Form
-			Sentence
-	1		Subject		verb		Object		endmark
-	4		Subject		verb		noun		endmark
-	3		Modifier	Subject		verb		noun	endmark
-	3		Modifier	Modifier	Subject		verb	noun	endmark
-	3		Modifier	Modifier	Modifier	Subject	verb	noun	endmark
-	2		Modifier	Modifier	Modifier	noun	verb	noun	endmark
-	6		Modifier	Modifier	adjective	noun	verb	noun	endmark
-    2		Modifier	adjective	adjective	noun	verb	noun	endmark
-    4		adjective	adjective	adjective	noun	verb	noun	endmark
+			       S
+		  	      / \ \ \
+	1	 	      U v O e
+	              |   |
+	4             U   n
+	             /|
+	3           M U
+	            | |
+	2           M n
+	           /|
+	7         M M
+	          | |
+	6         M a
+	         /|
+	7       M M
+	        | |
+	6       M a
+	        |
+	6       a
+
+	Rule	Sentential Form
+			       S
+		  	      / \ \ \
+	1	 	      U v O e
+	              |   |
+	4             U   n
+	             /|
+	3           M U
+	           / /|
+	3         M M U
+	         / / /|
+	3       M M M U
+	        | | | |
+	2       M M M n
+	        | | |
+	6       M M a
+	        | |
+	6       M a
+	        |
+	6       a
+
+	Rule	Sentential Form
+			       S
+		  	      / \ \ \
+	1	 	      U v O e
+	              |   |
+	4             U   n
+	             /|
+	3           M U
+	            | |
+	2           M n
+	           /|
+	7         M M
+	         / /|
+	7       M M M
+	        | | |
+	6       M M a
+	        | |
+	6       M a
+	        |
+	6       a
+
+    Rule	Sentential Form
+			       S
+		  	      / \ \ \
+	1	 	      U v O e
+	              |   |
+	4             U   n
+	             /|
+	3           M U
+	           / /|
+	3         M M U
+	          | | |
+    2         M M n
+              | |
+    6         M a
+             /|
+    7       M M
+            | |
+    6       M a
+            |
+    6       a
+
+
+
+    Rule	Sentential Form
+            S
+    1		U v O e
+    4       U v n e
+    3       M U v n e
+    3       M M U v n e
+    2       M M n v n e
+    6       M a n v n e
+    7       M M a n v n e
+    6       M a a n v n e
+    6       a a a n v n e
 
 2) Rightmost derivation is the most clean one and does reflect the structure of the sentence in the best way,
 because of the continous derivation of the subject. However, leftmost derivation

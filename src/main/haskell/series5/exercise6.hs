@@ -16,10 +16,16 @@ instance CodeGen Expr where
   codeGen (Const a)       = [PushConst a]
   codeGen (Varbl a)       = [PushAddr a]
   codeGen (BinExpr o a b) = codeGen a ++ codeGen b ++ [Calc o]
-  pp      (Const a)       = RoseNode (show a) []
-  pp      (Varbl a)       = RoseNode (show a) []
+  pp      (Const a)       = RoseNode "Const" [RoseNode (show a) []]
+  pp      (Varbl a)       = RoseNode "Addr" [RoseNode (show a) []]
   pp      (BinExpr o a b) = RoseNode (show o) [pp a, pp b]
 
-tree = Repeat (BinExpr Add (Const 4) (Const 8)) [Assign 0 (Const 5), Assign 0 (BinExpr Mul (Varbl 0) (Const 8))]
+tree = Repeat (Const 5) [Assign 0 (BinExpr Add (Varbl 0) (Const 1))]
 testPP = showTree $ pp tree
-testCodeGen = codeGen tree
+testCodeGen = codeGen tree ++ [EndProg]
+
+testTree   = putStr
+           $ unlines
+           $ map show
+           $ takeWhile (\(pc,_,_,_) -> pc /= -1)
+           $ scanl (core testCodeGen) (0, 0, emptyHeap, emptyStack) clock
