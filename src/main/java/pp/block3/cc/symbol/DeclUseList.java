@@ -98,4 +98,8 @@ public class DeclUseList extends DeclUseBaseListener {
         DeclUseList list = new DeclUseList();
         list.printErrors();
     }
+
+    public List<String> getErrorList() {
+        return errorlist;
+    }
 }
