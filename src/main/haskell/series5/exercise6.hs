@@ -20,7 +20,7 @@ instance CodeGen Expr where
   pp      (Varbl a)       = RoseNode "Addr" [RoseNode (show a) []]
   pp      (BinExpr o a b) = RoseNode (show o) [pp a, pp b]
 
-tree = Repeat (Const 5) [Assign 0 (BinExpr Add (Varbl 0) (Const 1))]
+tree = Repeat (Const 5) [Repeat (Const 5) [Assign 0 (BinExpr Add (Varbl 0) (Const 1))]]
 testPP = showTree $ pp tree
 testCodeGen = codeGen tree ++ [EndProg]
 
