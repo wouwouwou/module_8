@@ -5,9 +5,12 @@ table
   ;
 
 row
-  : ENTRY (SEP ENTRY)* ENDROW
+  : entry (SEP entry)* ENDROW
   ;
 
+entry
+  : ENTRY?
+  ;
 
 TABLESTART : WS '\\begin{tabular}{' [lcr]+ '}' WS;
 ENDROW : WS '\\\\' WS;

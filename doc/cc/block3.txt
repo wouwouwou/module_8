@@ -91,6 +91,16 @@ There exist two types of methods: entrySomething and exitSomething. If the attri
 you can do with the entry method. Inherited attributes can use the exit method to pass its type to its parent / siblings.
 
 
+____________________________Exercise 8____________________________
+1)
+TABLEBEGIN
+TABLEEND
+ROWEND
+COLSEP
+ENTRY
+
+COMMENT -> skip
+
 
 ____________________________Exercise 9____________________________
 1)
