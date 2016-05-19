@@ -18,6 +18,10 @@ public class MyErrorListener extends BaseErrorListener {
         this.errorlist = new ArrayList<>();
     }
 
+    public List<String> getErrorlist() {
+        return this.errorlist;
+    }
+
     @Override
     public void syntaxError(Recognizer<?, ?> recognizer, Object offendingSymbol, int line, int charPositionInLine, String msg, RecognitionException e) {
         String s = "line " + line + ":" + charPositionInLine + " syntax error at input '" + offendingSymbol.toString() + "'";
