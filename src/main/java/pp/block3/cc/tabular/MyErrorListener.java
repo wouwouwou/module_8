@@ -21,7 +21,6 @@ class MyErrorListener extends BaseErrorListener {
 
     @Override
     public void syntaxError(Recognizer<?, ?> recognizer, Object offendingSymbol, int line, int charPositionInLine, String msg, RecognitionException e) {
-        this.errorlist.add(msg);
-        errorlist.add("BLABHABLABALBA");
+        errorlist.add(msg);
     }
 }
