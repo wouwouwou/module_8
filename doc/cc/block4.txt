@@ -1,0 +1,29 @@
+____________________________Exercise 1____________________________
+AST (especially difference with parse tree)			Abstract Syntax Tree. Tree structured IR (intermediate representation).
+													Parse tree is a concrete representation of the input, the AST is an abstract represenation.
+													AST omits most nodes for nonterminal symbols.
+DAG													Directed Acyclic Graphs. An AST with sharing, where nodes can have multiple parents. Therefore
+													a DAG can be more compact than an AST.
+basic block											The simplest unit of control flow in a program; a maximal length sequence of
+													straightline, or branch-free code.
+CFG (two meanings)									Context Free Grammar. For a language L, its CFG defines the sets of strings of symbols
+													that are valid sentences in L.
+													Control Flow Graph. A directed graph where each node is a basic block and each edge is
+													a transition from block i to block j.
+dependence graph									Models the definition and the use of values / variables in a code fragment.
+call graph											representation of the runtime transfers of control between procedures. Each procedure has a node,
+													each edge is a distinct procedure call site.
+SSA													Statig Single-Assignment form. An IR which contains information about both the flow of control
+													and the flow of data values in the program.
+symbol table										The symbol table localizes information derived from potentially distant parts of the source code.
+													It is way easier to get your information from a table than computing the data every time.
+
+
+
+
+____________________________Exercise 2____________________________
+2)
+1, 2, 3 can be combined because they have max 1 outgoing and max 1 incoming edges. 5 can not, because it is the only one node there.
+
+3)
+1, 2 and 3 can be reordered because there is no dependency between them
