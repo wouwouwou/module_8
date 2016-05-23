@@ -27,3 +27,17 @@ ____________________________Exercise 2____________________________
 
 3)
 1, 2 and 3 can be reordered because there is no dependency between them
+
+
+____________________________Exercise 3____________________________
+1)
+See cc3-data.pdf and cc3-flow.pdf
+
+2)
+Lines 1, 2 and 3 can be combined into a basic block.
+
+3)
+Lines 1, 2 and 3 can be reordered as there is no dependency between them.
+6 and 9 can be reordered according to the data flow, but because of the nature
+of this code reordering those statements would change the behaviour.
+
