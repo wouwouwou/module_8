@@ -39,4 +39,4 @@ male(floris).
 male(X) :- husband(X,_).
 
 % HIER GAAT HET KAPOT
-mother(beatrix,beatrix).
+% mother(beatrix,beatrix).
