@@ -3,6 +3,7 @@ module S6E1 where
 import FPPrac.Trees
 import FP_TypesEtc
 import FP_ParserGen
+import Tokenizer
 
 grammar :: Grammar
 grammar nt = case nt of
@@ -12,7 +13,8 @@ grammar nt = case nt of
   Expr -> [[lpar, Expr, Op, Expr, rpar],
            [Nmbr],
            [Vrbl]]
-  Stmt -> [[Vrbl, assgn, Expr]]
+  Stmt -> [[assgn, Vrbl, Expr],
+           [repet, Expr, Rep1 [Stmt]]]
 
 
 nmbr = SyntCat Nmbr
@@ -21,13 +23,10 @@ op = SyntCat Op
 
 lpar = Symbol "("
 rpar = Symbol ")"
-assgn = Symbol "="
+assgn = Terminal "assign"
+repet = Terminal "repeat"
 
-tokens = [(lpar, "(", 0),
-          (Nmbr, "2", 1),
-          (Op, "+", 2),
-          (Vrbl, "abc", 3),
-          (rpar, ")", 4)]
+tokens = tokenize "a assign (100/50)"
 
 parseTree = parse grammar Expr tokens
 
@@ -36,5 +35,4 @@ testGr = showTree $ toRoseTree parseTree
 testGr2 = showTree $ cleanTree parseTree
 
 cleanTree :: ParseTree -> RoseTree
-cleanTree (PLeaf (_,s,_)) = RoseNode s []
-cleanTree (PNode nt ns) = RoseNode (show nt) (map cleanTree ns)
+cleanTree (PNode Expr [PNode Expr e1, PNode Op [PLeaf (Op,o,_)], PNode Expr e2]) = RoseNode (show o) []
