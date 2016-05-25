@@ -41,3 +41,39 @@ Lines 1, 2 and 3 can be reordered as there is no dependency between them.
 6 and 9 can be reordered according to the data flow, but because of the nature
 of this code reordering those statements would change the behaviour.
 
+
+____________________________Exercise 6____________________________
+1)
+Running the program through the assembler twice results in the same code.
+
+2)
+Done.
+
+3)
+An integer takes up 4 bytes of memory, so to get an item in an array you need
+to multiply the index of the array by the size of the elements and add the offset.
+
+
+____________________________Exercise 7____________________________
+See cc7-cfg.pdf
+
+
+____________________________Exercise 8____________________________
+a * 2 + a * 2 * b
+
+push a
+push 2
+mult
+push a
+push 2
+push b
+mult
+mult
+add
+
+t1 = a * 2
+t2 = a * 2
+t3 = t2 * b
+t4 = t1 + t3
+
+1)

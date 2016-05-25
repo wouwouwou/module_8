@@ -1,4 +1,4 @@
-package pp.iloc.test;
+package pp.block4;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.fail;
@@ -11,6 +11,7 @@ import java.util.HashSet;
 import org.junit.Test;
 
 import pp.iloc.Assembler;
+import pp.iloc.Simulator;
 import pp.iloc.model.Program;
 import pp.iloc.parse.FormatException;
 
@@ -39,6 +40,15 @@ public class AssemblerTest {
 				.getRegLines().get("r_1"));
 		assertEquals(ints(1, 2, 5, 6, 9, 10, 12, 14), p.getRegLines().get("r_2"));
 		assertEquals(ints(0, 15), p.getSymbLines().get("a"));
+	}
+
+	@Test
+	public void testMax() throws FormatException {
+		Program p = parse("max");
+
+		Program p2 = Assembler.instance().assemble(p.prettyPrint());
+
+		assertEquals(p, p2);
 	}
 
 	private HashSet<Integer> ints(Integer... vals) {

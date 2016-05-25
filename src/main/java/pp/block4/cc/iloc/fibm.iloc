@@ -1,0 +1,21 @@
+start: loadI 1 => r_1
+       storeAI r_1 => r_arp,@x
+       storeAI r_1 => r_arp,@y
+       storeAI r_1 => r_arp,@z
+       storeAI r_1 => r_arp,@one
+while: loadAI r_arp,@n => r_1
+       loadAI r_arp,@one => r_2
+       cmp_GT r_1,r_2 => r_3
+       cbr r_3 -> body,end
+body:  loadAI r_arp,@x => r_1
+       loadAI r_arp, @y => r_2
+       add r_1,r_2 => r_3
+       storeAI r_3 => r_arp,@z
+       storeAI r_2 => r_arp,@x
+       storeAI r_1 => r_arp,@y
+       loadAI r_arp,@n => r_1
+       subI r_1,1 => r_1
+       storeAI r_1 => r_arp,@n
+       jumpI -> while
+end:   loadAI r_arp,@z => r_1
+       out "Fib: ", r_1
