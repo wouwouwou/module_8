@@ -12,6 +12,7 @@ import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.stream.Collectors;
+import pp.block3.cc.tabular.LatexParser.*;
 
 public class TabularListener extends LatexBaseListener {
 
@@ -37,19 +38,19 @@ public class TabularListener extends LatexBaseListener {
     }
 
     @Override
-    public void exitTable(LatexParser.TableContext ctx) {
+    public void exitTable(TableContext ctx) {
         String rows = ctx.row().stream().map(this::val).collect(Collectors.joining());
         set(ctx, String.format("<table border=\"1\">\n%s</table>", rows));
     }
 
     @Override
-    public void exitRow(LatexParser.RowContext ctx) {
+    public void exitRow(RowContext ctx) {
         String entrys = ctx.entry().stream().map(this::val).collect(Collectors.joining());
         set(ctx, String.format("<tr>\n%s</tr>\n", entrys));
     }
 
     @Override
-    public void exitEntry(LatexParser.EntryContext ctx) {
+    public void exitEntry(EntryContext ctx) {
         String entry = ctx.ENTRY() == null ? "" : ctx.ENTRY().getText();
         set(ctx, String.format("<td>%s</td>\n", entry));
     }

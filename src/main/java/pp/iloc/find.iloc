@@ -1,0 +1,12 @@
+start:   in "" => r_x
+         loadI 0 => r_i
+         loadI @alength => r_len
+for:     cmp_LT r_i,r_len => r_cmp
+         cbr r_cmp -> if, end
+if:      i2i r_i => r_a
+         multI r_a, 4 => r_a
+         addI r_a, @a => r_a
+         loadAO
+forend:  addI r_i, 1 => r_i
+         jump -> for
+end:     out "Index: ", r_i

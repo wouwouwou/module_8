@@ -42,6 +42,12 @@ Lines 1, 2 and 3 can be reordered as there is no dependency between them.
 of this code reordering those statements would change the behaviour.
 
 
+____________________________Exercise 4____________________________
+3)
+The BottomUp builder is not very different from our answers. All nodes are line numbers, all edges are edges in the cfg too.
+TopDown differs a lot however. Each line has an entry and an exit, and some parts are treated more like blocks of code.
+
+
 ____________________________Exercise 6____________________________
 1)
 Running the program through the assembler twice results in the same code.
