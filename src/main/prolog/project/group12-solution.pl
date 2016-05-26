@@ -37,6 +37,7 @@ solve(Sol) :-
        [C, C_loc, thursday, C_flv],
        [D, D_loc, friday, D_flv]],
 
+  % Make sure that all stands, locations and flavours are present.
   all([alice, gray, tom, sally], [A, B, C, D]),
   all([boulder, granite, marsh, rockland], [A_loc, B_loc, C_loc, D_loc]),
   all([chocolate, coffee, peanut, peppermint], [A_flv, B_flv, C_flv, D_flv]),
@@ -67,3 +68,5 @@ solve(Sol) :-
   not(C3_day = tuesday),      % 3
   % not(C6_day = friday),     % 6
   not(C4_stand = alice).      % 4
+
+go(Sol) :- solve(Sol).
