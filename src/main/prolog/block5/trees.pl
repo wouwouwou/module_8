@@ -8,4 +8,6 @@ max(t(_, A, nil), N) :- number(A), N is A, !.
 max(t(_, A, T), N) :- number(A), istree(T), max(T, N).
 
 issorted(t(nil,N,nil)) :- !.
-issorted(t(A, B, nil)) :- max(A, N).
+issorted(t(A, B, nil)) :- max(A, N), number(B), N =< B, !.
+issorted(t(nil, B, C)) :- min(C, N), number(B), N >= B, !.
+issorted(t(A,B,C)) :- not(A=nil), not(C=nil), issorted(t(A, B, nil)), issorted(t(nil, B, C)).
