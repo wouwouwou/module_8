@@ -8,26 +8,26 @@ import Tokenizer
 
 grammar :: Grammar
 grammar nt = case nt of
-  Nmbr -> [[nmbr]]
-  Vrbl -> [[vrbl]]
-  Op   -> [[op]]
-  Expr -> [[lpar, Expr, Op, Expr, rpar],
-           [Nmbr],
-           [Vrbl]]
-  Stmt -> [[assgn, Vrbl, Expr],
-           [repet, Expr, Rep1 [Stmt]]]
-  Space ->[[space]]
-
+  Nmbr  ->  [[nmbr]]
+  Vrbl  ->  [[vrbl]]
+  Op    ->  [[op]]
+  Expr  ->  [[lpar, Expr, Op, Expr, rpar],
+            [Nmbr],
+            [Vrbl]]
+  Stmt  ->  [[assgn, Vrbl, Expr],
+            [repet, Expr, Rep1 [Stmt]]]
 
 nmbr = SyntCat Nmbr
 vrbl = SyntCat Vrbl
 op = SyntCat Op
-space = SyntCat Space
 
 lpar = Symbol "("
 rpar = Symbol ")"
-assgn = Terminal "assign"
-repet = Terminal "repeat"
+assgn = SyntCat (Rswrd "assign")
+repet = SyntCat (Rswrd "repeat")
+iff = SyntCat (Rswrd "if")
+elsse = SyntCat (Rswrd "else")
+thenn = SyntCat (Rswrd "then")
 
 tokens = tokenize "assign asdf (100/50)"
 

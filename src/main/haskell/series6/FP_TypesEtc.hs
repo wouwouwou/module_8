@@ -26,10 +26,11 @@ data Alphabet = Terminal String               -- Terminal symbol: WILL be includ
 
               | Expr                          -- Expression
               | Stmt                          -- Statement
+              | Rswrd    String               -- Reserved Word
               | Nmbr                          -- Number
               | Vrbl                          -- Variable
               | Op                            -- Operation symbol
-              | Space                         -- Spaces
+              | WS                            -- Spaces
               | Bracket                       -- Brackets
               deriving (Eq,Ord,Show,Generic,ToRoseTree)
 

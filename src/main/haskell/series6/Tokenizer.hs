@@ -74,7 +74,7 @@ fsaWhiteSpace s x = case s of
     | otherwise -> Q
 
 tokenize :: String -> [Token]
-tokenize st = sortTok (filterTok (tokenize' st)) 0
+tokenize st = sortTok (filterTok(tokenize' st)) 0
 
 sortTok :: [Token] -> Int -> [Token]
 sortTok [] _ = []
@@ -82,9 +82,12 @@ sortTok ((a, b, c):ts) n = (a, b, n) : sortTok ts (n + 1)
 
 filterTok :: [Token] -> [Token]
 filterTok [] = []
-filterTok ((a,s,n):ts) | a == Vrbl && s == "assign" = (Terminal "assign","assign",n):filterTok ts
-                     | a == Vrbl && s == "repeat" = (Terminal "repeat","assign",n):filterTok ts
-                     | a == Symbol "ws" = filterTok ts
+filterTok ((a,s,n):ts) | a == Vrbl && s == "assign" = (Rswrd "assign","assign",n):filterTok ts
+                     | a == Vrbl && s == "repeat" = (Rswrd "repeat","assign",n):filterTok ts
+                     | a == Vrbl && s == "then" = (Rswrd "then", "then", n):filterTok ts
+                     | a == Vrbl && s == "else" = (Rswrd "else", "else", n):filterTok ts
+                     | a == Vrbl && s == "if" = (Rswrd "if", "if", n):filterTok ts
+                     | a == WS = filterTok ts
                      | otherwise = (a,s,n):filterTok ts
 
 tokenize' :: String -> [Token]
@@ -121,5 +124,5 @@ makeToken (c:cs) | isOperator c = (Op, c:cs, 0)
                  | isAlpha c    = (Vrbl, c:cs, 0)
                  | c == '('     = (Bracket, "(", 0)
                  | c == ')'     = (Bracket, ")", 0)
-                 | c == ' '     = (Symbol "ws", c:cs, 0)
+                 | c == ' '     = (WS, c:cs, 0)
                  | otherwise    = error "empty token"
