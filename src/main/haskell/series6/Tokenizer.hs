@@ -74,7 +74,11 @@ fsaWhiteSpace s x = case s of
     | otherwise -> Q
 
 tokenize :: String -> [Token]
-tokenize st = filterTok $ tokenize st
+tokenize st = sortTok (filterTok (tokenize' st)) 0
+
+sortTok :: [Token] -> Int -> [Token]
+sortTok [] _ = []
+sortTok ((a, b, c):ts) n = (a, b, n) : sortTok ts (n + 1)
 
 filterTok :: [Token] -> [Token]
 filterTok [] = []
@@ -83,12 +87,11 @@ filterTok ((a,s,n):ts) | a == Vrbl && s == "assign" = (Terminal "assign","assign
                      | a == Symbol "ws" = filterTok ts
                      | otherwise = (a,s,n):filterTok ts
 
-
 tokenize' :: String -> [Token]
 tokenize' []     = []
 tokenize' (c:cs) | isNothing fsa = error "parse error"
-                | otherwise = token : tokenize rest
-                where
+                 | otherwise = token : tokenize' rest
+                 where
                   fsa = findFSA c
                   (token, rest) = findToken "" (fromJust fsa) Q (c:cs)
 
@@ -116,7 +119,7 @@ makeToken (c:cs) | isOperator c = (Op, c:cs, 0)
                  | isDigit c    = (Nmbr, c:cs, 0)
                  | c == '~'     = (Nmbr, c:cs, 0)
                  | isAlpha c    = (Vrbl, c:cs, 0)
-                 | c == '('     = (Symbol "(", "(", 0)
-                 | c == ')'     = (Symbol ")", ")", 0)
+                 | c == '('     = (Bracket, "(", 0)
+                 | c == ')'     = (Bracket, ")", 0)
                  | c == ' '     = (Symbol "ws", c:cs, 0)
                  | otherwise    = error "empty token"

@@ -1,6 +1,7 @@
 module S6E1 where
 
 import FPPrac.Trees
+import GHC.Generics
 import FP_TypesEtc
 import FP_ParserGen
 import Tokenizer
@@ -15,20 +16,22 @@ grammar nt = case nt of
            [Vrbl]]
   Stmt -> [[assgn, Vrbl, Expr],
            [repet, Expr, Rep1 [Stmt]]]
+  Space ->[[space]]
 
 
 nmbr = SyntCat Nmbr
 vrbl = SyntCat Vrbl
 op = SyntCat Op
+space = SyntCat Space
 
 lpar = Symbol "("
 rpar = Symbol ")"
 assgn = Terminal "assign"
 repet = Terminal "repeat"
 
-tokens = tokenize "a assign (100/50)"
+tokens = tokenize "assign asdf (100/50)"
 
-parseTree = parse grammar Expr tokens
+parseTree = parse grammar Stmt tokens
 
 testTxt = prpr parseTree
 testGr = showTree $ toRoseTree parseTree
