@@ -11,6 +11,9 @@ isOperator x = x `elem` "+-*/^<>="
 isBracket :: Char -> Bool
 isBracket x = x `elem` "()"
 
+isBrace :: Char -> Bool
+isBrace x = x `elem` "{}"
+
 data FsaState = Q
               | R
               | S
@@ -66,6 +69,15 @@ fsaBrck s x = case s of
 testFsaBrck = do
   print $ foldl fsaBrck Q "()"
 
+fsaBrace :: FsaState -> Char -> FsaState
+fsaBrace s x = case s of
+  Q | isBrace x   -> R
+    | otherwise   -> Q
+  R -> Q
+
+testFsaBrace = do
+  print $ foldl fsaBrace Q "{}"
+
 fsaWhiteSpace :: FsaState -> Char -> FsaState
 fsaWhiteSpace s x = case s of
   Q | x == ' '  -> R
@@ -74,7 +86,7 @@ fsaWhiteSpace s x = case s of
     | otherwise -> Q
 
 tokenize :: String -> [Token]
-tokenize st = sortTok (filterTok(tokenize' st)) 0
+tokenize st = sortTok (filterTok(resWords(tokenize' st))) 0
 
 sortTok :: [Token] -> Int -> [Token]
 sortTok [] _ = []
@@ -82,13 +94,25 @@ sortTok ((a, b, c):ts) n = (a, b, n) : sortTok ts (n + 1)
 
 filterTok :: [Token] -> [Token]
 filterTok [] = []
-filterTok ((a,s,n):ts) | a == Vrbl && s == "assign" = (Rswrd "assign","assign",n):filterTok ts
-                     | a == Vrbl && s == "repeat" = (Rswrd "repeat","assign",n):filterTok ts
-                     | a == Vrbl && s == "then" = (Rswrd "then", "then", n):filterTok ts
-                     | a == Vrbl && s == "else" = (Rswrd "else", "else", n):filterTok ts
-                     | a == Vrbl && s == "if" = (Rswrd "if", "if", n):filterTok ts
-                     | a == WS = filterTok ts
-                     | otherwise = (a,s,n):filterTok ts
+filterTok ((a,s,n):ts) | a == Rswrd = (filterTok' (a, s, n)):filterTok ts
+                       | a == WS = filterTok ts
+                       | otherwise = (a,s,n):filterTok ts
+
+filterTok' :: Token -> Token
+filterTok' (a, s, n)   |  s == "assign"   = (Assgn, s, n)
+                       |  s == "repeat"   = (Repet, s, n)
+                       |  s == "if"       = (Iff,   s, n)
+                       |  s == "then"     = (Thenn, s, n)
+                       |  s == "else"     = (Elsse, s, n)
+                       |  otherwise       = (a, s, n)
+
+resWords :: [Token] -> [Token]
+resWords = map resWords'
+
+resWords' (Vrbl, b, c)    | elem b res = (Rswrd, b, c)
+                          | otherwise  = (Vrbl,  b, c)
+                          where res = ["if", "then", "repeat", "else", "assign"]
+resWords' x = x
 
 tokenize' :: String -> [Token]
 tokenize' []     = []
@@ -105,6 +129,7 @@ findFSA c | isOperator c = Just fsaOprt
           | c == '~'     = Just fsaNmbr
           | isAlpha c    = Just fsaIdnt
           | isBracket c  = Just fsaBrck
+          | isBrace c    = Just fsaBrace
           | c == ' '     = Just fsaWhiteSpace
           | otherwise    = Nothing
 
@@ -124,5 +149,7 @@ makeToken (c:cs) | isOperator c = (Op, c:cs, 0)
                  | isAlpha c    = (Vrbl, c:cs, 0)
                  | c == '('     = (Bracket, "(", 0)
                  | c == ')'     = (Bracket, ")", 0)
+                 | c == '{'     = (Brace, "{", 0)
+                 | c == '}'     = (Brace, "}", 0)
                  | c == ' '     = (WS, c:cs, 0)
                  | otherwise    = error "empty token"

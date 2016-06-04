@@ -24,14 +24,26 @@ data Alphabet = Terminal String               -- Terminal symbol: WILL be includ
               | Rep0  [Alphabet]              -- Zero or more repetitions
               | Rep1  [Alphabet]              -- One or more repetitions
 
-              | Expr                          -- Expression
-              | Stmt                          -- Statement
-              | Rswrd    String               -- Reserved Word
               | Nmbr                          -- Number
               | Vrbl                          -- Variable
               | Op                            -- Operation symbol
+
+              | Program                       -- Program
+              | Block                         -- Block
+              | Stmt                          -- Statement
+              | Expr                          -- Expression
+
               | WS                            -- Spaces
               | Bracket                       -- Brackets
+              | Brace                         -- Braces
+              | Rswrd                         -- Reserved words
+
+              | Assgn                          -- Assignment
+              | Repet                          -- Repeat
+              | Iff                            -- If
+              | Thenn                          -- Then
+              | Elsse                          -- Else
+
               deriving (Eq,Ord,Show,Generic,ToRoseTree)
 
 -- ===================================================================
