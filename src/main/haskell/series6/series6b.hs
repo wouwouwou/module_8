@@ -10,7 +10,7 @@ data Expr = Const Int
           | Iff Expr Expr Expr
           | BinOp String Expr Expr
           | App Expr Expr
-          | Lambda Type Expr
+          | Lambda Type String Expr
           deriving Show
 
 data Type = IntType
@@ -28,6 +28,7 @@ myEnv = [("+", FunType IntType (FunType IntType IntType)),
          ("*", FunType IntType (FunType IntType IntType)),
          ("&&", FunType BoolType (FunType BoolType BoolType)),
          ("||", FunType BoolType (FunType BoolType BoolType)),
+         ("==", FunType IntType (FunType IntType BoolType)),
 
          ("++", FunType (TwoType IntType IntType) (FunType (TwoType IntType IntType) (TwoType IntType IntType))),
          ("--", FunType (TwoType IntType IntType) (FunType (TwoType IntType IntType) (TwoType IntType IntType))),
@@ -66,6 +67,7 @@ typeOf env  (BinOp   op   e1   e2)   = case t_op of
 typeOf env (App e1 e2)               | typeOf env e2 == t1   = t2
                                      | otherwise             = error "Types don't match"
                                          where (FunType t1 t2) = typeOf env e1
-typeOf env (Lambda t1 e2)  = FunType t1 (typeOf env e2)
+typeOf env (Lambda t1 v e2)  = FunType t1 (typeOf x e2)
+                             where x = (v, t1):env
 
 test = typeOf myEnv (BinOp "+++" (Triple (Const 5) (Const 3) (Const 12)) (Triple (Const 22) (Var "x") (Var "y")))

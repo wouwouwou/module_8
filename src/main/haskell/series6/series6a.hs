@@ -18,7 +18,7 @@ grammar nt = case nt of
                      , [repet, Expr, Block]
                      , [iff, Expr, thenn, Block, Opt [elsse, Block]]
                      , [Expr]]
-  Block      ->      [[lbrc, Rep1 [Stmt], rbrc]]
+  Block      ->      [[lbrc, Rep0 [Stmt], rbrc]]
   Program    ->      [[Block]]
 
 nmbr  = SyntCat Nmbr
@@ -36,7 +36,7 @@ iff     = Terminal "if"
 elsse   = Terminal "else"
 thenn   = Terminal "then"
 
-tokens = tokenize "{(3+4)}"
+tokens = tokenize "{assign a (++4)}"
 
 parseTree = parse grammar Program tokens
 
