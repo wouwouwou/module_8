@@ -27,7 +27,7 @@ public class MaxTest {
 
     @Test
     public void fibTest() {
-        Program fib = parse("fib");
+        Program fib = parse("src/main/java/pp/block4/cc/iloc/fib");
         Simulator s = new Simulator(fib);
         s.getVM().setNum("n", 10);
         s.run();
@@ -35,7 +35,7 @@ public class MaxTest {
 
     @Test
     public void fibMTest() {
-        Program fib = parse("fibm");
+        Program fib = parse("src/main/java/pp/block4/cc/iloc/fibm");
         Simulator.DEBUG = true;
         Simulator s = new Simulator(fib);
         s.getVM().setNum("n", 10);
