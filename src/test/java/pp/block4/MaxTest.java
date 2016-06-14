@@ -17,7 +17,7 @@ public class MaxTest {
     @Test
     public void doubleAssemblyTest() {
         Simulator.DEBUG = true;
-        Program max = parse("max");
+        Program max = parse("src/main/java/pp/block4/cc/iloc/max");
         Simulator s = new Simulator(max);
         s.getVM().init("a", 1, 2, 3, 4, 10, 6, 7, 8, 9);
         s.getVM().setNum("alength", 9);
