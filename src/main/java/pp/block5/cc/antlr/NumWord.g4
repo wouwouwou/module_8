@@ -1,6 +1,6 @@
 grammar NumWord;
 
-@header{package pp.block5.cc.antlr;}
+// @header{package pp.block5.cc.antlr;}
 
 sentence: (number word)+ EOF;
 number: NUMBER;

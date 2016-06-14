@@ -1,6 +1,6 @@
 grammar Building;
 
-@header{package pp.block5.cc.antlr;}
+// @header{package pp.block5.cc.antlr;}
 
 building: ID COLON floor+;
 

@@ -1,6 +1,6 @@
 grammar SimplePascal;
 
-@header{package pp.block5.cc.pascal;}
+//@header{package pp.block5.cc.pascal;}
 
 /** Pascal program. */
 program
