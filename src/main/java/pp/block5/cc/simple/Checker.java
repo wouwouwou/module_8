@@ -7,15 +7,20 @@ import org.antlr.v4.runtime.ParserRuleContext;
 import org.antlr.v4.runtime.Token;
 import org.antlr.v4.runtime.tree.ParseTree;
 import org.antlr.v4.runtime.tree.ParseTreeWalker;
+import org.antlr.v4.runtime.tree.TerminalNode;
+import pp.block5.cc.pascal.SimplePascalParser.*;
 
 import pp.block5.cc.ParseException;
 import pp.block5.cc.pascal.SimplePascalBaseListener;
 /** Class to type check and calculate flow entries and variable offsets. */
 public class Checker extends SimplePascalBaseListener {
+
 	/** Result of the latest call of {@link #check}. */
 	private Result result;
+
 	/** Variable scope for the latest call of {@link #check}. */
 	private Scope scope;
+
 	/** List of errors collected in the latest call of {@link #check}. */
 	private List<String> errors;
 
@@ -112,13 +117,82 @@ public class Checker extends SimplePascalBaseListener {
 		setEntry(ctx, entry(ctx.expr()));
 	}
 
-	@Override
+    @Override
 	public void exitTrueExpr(TrueExprContext ctx) {
 		setType(ctx, Type.BOOL);
 		setEntry(ctx, ctx);
 	}
 
-	/** Indicates if any errors were encountered in this tree listener. */
+    @Override
+    public void exitVar(VarContext ctx) {
+        for (TerminalNode id : ctx.ID()) {
+            if (!this.scope.put(id.getText(), getType(ctx.type()))) {
+                addError(ctx, "This variable has already been declared!");
+            }
+        }
+    }
+
+    @Override
+    public void exitAssStat(AssStatContext ctx) {
+        checkType(ctx.expr(), getType(ctx.target()));
+        setEntry(ctx, ctx.expr());
+    }
+
+    @Override
+    public void exitInStat(InStatContext ctx) {
+        checkType(ctx.target(), Type.INT);
+        setEntry(ctx, ctx.target());
+    }
+
+    @Override
+    public void exitOutStat(OutStatContext ctx) {
+        setEntry(ctx, ctx);
+    }
+
+    @Override
+    public void exitIfStat(IfStatContext ctx) {
+        checkType(ctx.expr(), Type.BOOL);
+        setEntry(ctx, ctx.expr());
+    }
+
+    @Override
+    public void exitIdTarget(IdTargetContext ctx) {
+        Type type = this.scope.type(ctx.ID().getText());
+        if (type == null){
+            addError(ctx, "This variable has not yet been declared!");
+        } else {
+            setType(ctx, type);
+            setOffset(ctx, this.scope.offset(ctx.ID().getText()));
+        }
+    }
+
+    @Override
+    public void exitWhileStat(WhileStatContext ctx) {
+        checkType(ctx.expr(), Type.BOOL);
+        setEntry(ctx, ctx.expr());
+    }
+
+    @Override
+    public void exitBlock(BlockContext ctx) {
+        setEntry(ctx, entry(ctx.stat(0)));
+    }
+
+    @Override
+    public void exitBlockStat(BlockStatContext ctx) {
+        setEntry(ctx, entry(ctx.block()));
+    }
+
+    @Override
+    public void exitBoolType(BoolTypeContext ctx) {
+        setType(ctx, Type.BOOL);
+    }
+
+    @Override
+    public void exitIntType(IntTypeContext ctx) {
+        setType(ctx, Type.INT);
+    }
+
+    /** Indicates if any errors were encountered in this tree listener. */
 	public boolean hasErrors() {
 		return !getErrors().isEmpty();
 	}
